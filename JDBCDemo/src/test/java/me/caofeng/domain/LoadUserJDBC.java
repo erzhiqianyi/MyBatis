@@ -1,5 +1,6 @@
-package me.caofeng.model;
+package me.caofeng.domain;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.sql.*;
@@ -7,6 +8,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 class LoadUserJDBC {
+
+
+    @BeforeAll
+    public void setUp(){
+
+    }
+
+    public void runScript(){
+
+    }
     @Test
     public void loadUserByJdbc() throws ClassNotFoundException, SQLException {
         String url = "jdbc:mysql://127.0.0.1:3306/mybatis?serverTimezone=UTC";

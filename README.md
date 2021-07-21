@@ -38,3 +38,23 @@ Myabits  source read note and sample
 - 完全代码配置
 - 基于XMl配置
 - 外部框架配置
+
+### MyBatis 使用示例
+[官方教程](https://mybatis.org/mybatis-3/zh/getting-started.html)
+#### 单独使用
+[示例代码](MyBatisDemo)
+##### 引入 MyBatis 依赖
+使用 maven ,引入依赖
+```xml
+<dependency>
+  <groupId>org.mybatis</groupId>
+  <artifactId>mybatis</artifactId>
+  <version>x.x.x</version>
+</dependency>
+```
+##### 构建  SqlSessionFactory
+- 从XML中构建
+
+- 用Java代码直接构建
+
+#### 在Spring Boot 中使用

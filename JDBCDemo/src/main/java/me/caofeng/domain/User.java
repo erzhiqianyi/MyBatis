@@ -1,4 +1,4 @@
-package me.caofeng.model;
+package me.caofeng.domain;
 
 public class User {
 
