@@ -53,8 +53,12 @@ Myabits  source read note and sample
 </dependency>
 ```
 ##### 构建  SqlSessionFactory
-- 从XML中构建
-
-- 用Java代码直接构建
-
+示例代码 [MyBatisDemo](MyBatisDemo)
+- 从XML中构建  
+  从 XML 配置文件或一个预先配置的 Configuration 实例来构建出 SqlSessionFactory 实例。
+- 用Java代码直接构建  
+  使用 ```Configuration ``` 进行配置
+  
 #### 在Spring Boot 中使用
+结合Spring Boot 使用  
+示例代码 [SpringMyBatis](SpringMyBatis)
