@@ -22,6 +22,7 @@ import java.nio.charset.Charset;
 import java.util.Properties;
 
 /**
+ * 工具类,通过类加载器读取外部资源
  * A class to simplify access to resources through the classloader.
  *
  * @author Clinton Begin
