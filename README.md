@@ -775,6 +775,7 @@ public class DefaultResultSetHandler implements ResultSetHandler {
 ##### exceptions
 异常工厂和Mybatis异常父类
 [exceptions代码](mybatis-3/src/main/java/org/apache/ibatis/exceptions)  
+![](uml/MyBatisException.png)
 #####  Java中的异常
 “异常”代表程序运行中遇到了意料之外的事情，父类为 Throwable
 - Throwable
@@ -787,24 +788,6 @@ public class DefaultResultSetHandler implements ResultSetHandler {
     - CheckException
         受检查异常，不可预知和避免，需要处理
       
-```puml
-@startuml
-Title "MyBatisException类图"
-interface Serializable
-class Throwable 
-class Exception 
-class RuntimeException 
-class IbatisException 
-class PersistenceException 
-class TooManyResultsException
-Throwable <|.. Serializable
-Exception <|-- Throwable   
-RuntimeException <|--  Exception 
-IbatisException <|--   RuntimeException 
-PersistenceException <|--   IbatisException 
-TooManyResultsException <|--   IbatisException 
-@enduml
-```
 - [io](mybatis-3/src/main/java/org/apache/ibatis/io)
 - [lang](mybatis-3/src/main/java/org/apache/ibatis/lang)
 - [logging](mybatis-3/src/main/java/org/apache/ibatis/logging)
