@@ -37,6 +37,12 @@ Myabits source read note and sample
 - [Mybatis分包](#Mybatis分包)
   - [基础功能](#基础功能)
      - [exceptions](#exceptions)
+        - [Java中的异常](#Java中的异常)
+     - [reflection](#reflection)
+        - [装饰器模式](#装饰器模式)
+        - [反射](#反射)
+          - [反射功能](#反射功能)
+          - [反射基础包](#反射基础包)
   - [配置解析](#配置解析)
   - [核心操作](#核心操作)
 - [阅读技巧](#阅读技巧)
@@ -791,7 +797,29 @@ public class DefaultResultSetHandler implements ResultSetHandler {
 - [io](mybatis-3/src/main/java/org/apache/ibatis/io)
 - [lang](mybatis-3/src/main/java/org/apache/ibatis/lang)
 - [logging](mybatis-3/src/main/java/org/apache/ibatis/logging)
-- [reflection](mybatis-3/src/main/java/org/apache/ibatis/reflection)
+##### reflection
+反射功能
+[reflection代码](mybatis-3/src/main/java/org/apache/ibatis/reflection)
+##### 装饰器模式
+装饰器模式又称包装模式，是一种结构型模式。这种设计模式是指能够在一个类的基础上增加一个装饰类（也可以叫包装类），并在装饰类中增加一些新的特性和功能。
+这样，通过对原有类的包装，就可以在不改变原有类的情况下为原有类增加更多的功能。
+[示例代码](mybatis-3/src/test/java/org/apache/ibatis/reflection/patterns)
+##### 反射
+通过反射，能够在类的运行过程中知道这个类有哪些属性和方法，还可以修改属性、调用方法、建立类的实例。
+##### 反射功能
+- 在运行时判断任意一个对象所属的类
+- 在运行时构造任意一个类的对象
+- 在运行时修改任意一个对象的成员变量
+- 在运行时调用任意一个对象的方法
+##### 反射基础包
+围绕 Java 类的成员展开,属性字段、构造函数、方法及各个上面的注解
+- Object  
+所有类的父类,提供基本方法
+  - getClass()
+     获取对象类类型
+- Class  
+正在运行的 Java 应用程序中的类的实例。
+###### 
 - [parsing](mybatis-3/src/main/java/org/apache/ibatis/parsing)
 - [type](mybatis-3/src/main/java/org/apache/ibatis/type)
 #### 配置解析
