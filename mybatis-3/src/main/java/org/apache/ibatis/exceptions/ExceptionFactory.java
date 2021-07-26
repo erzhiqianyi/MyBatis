@@ -18,12 +18,14 @@ package org.apache.ibatis.exceptions;
 import org.apache.ibatis.executor.ErrorContext;
 
 /**
+ * 异常工厂，包装转换异常
  * @author Clinton Begin
  */
 public class ExceptionFactory {
 
   private ExceptionFactory() {
     // Prevent Instantiation
+    // 工具类不提供实例化操作
   }
 
   public static RuntimeException wrapException(String message, Exception e) {

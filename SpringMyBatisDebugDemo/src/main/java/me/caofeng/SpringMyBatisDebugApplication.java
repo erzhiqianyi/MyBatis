@@ -2,7 +2,9 @@ package me.caofeng;
 
 import me.caofeng.domain.User;
 import me.caofeng.mapper.UserMapper;
+import org.apache.ibatis.binding.MapperMethod;
 import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.reflection.Jdk;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
@@ -15,12 +17,10 @@ import java.io.InputStream;
 import java.util.List;
 
 @SpringBootApplication
-@MapperScan(basePackages = "me.caofeng.mapper")
 public class SpringMyBatisDebugApplication {
 
     public static void main(String[] args) {
         initMyBatis();
-        SpringApplication.run(SpringMyBatisDebugApplication.class, args);
     }
 
     private static void initMyBatis() {
@@ -42,7 +42,6 @@ public class SpringMyBatisDebugApplication {
                 System.out.println("name: " + user.getName() + ";email:" + user.getEmail());
             }
         }
-        ;
 
     }
 

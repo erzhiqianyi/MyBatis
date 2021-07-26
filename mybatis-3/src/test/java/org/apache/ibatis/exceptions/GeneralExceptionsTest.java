@@ -49,6 +49,7 @@ class GeneralExceptionsTest {
 
   @Test
   void shouldInstantiateAndThrowAllCustomExceptions() throws Exception {
+    //各个功能包下面的异常基类
     Class<?>[] exceptionTypes = {
         BindingException.class,
         CacheException.class,
