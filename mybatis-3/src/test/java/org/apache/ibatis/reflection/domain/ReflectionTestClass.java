@@ -1,26 +1,24 @@
 package org.apache.ibatis.reflection.domain;
 
-import org.checkerframework.checker.signature.qual.FieldDescriptor;
 import org.checkerframework.checker.signature.qual.Identifier;
 
-@Deprecated
-public class Reflect extends ReflectRoot {
+public class ReflectionTestClass extends ReflectionTestClassRoot {
 
     @Identifier
     public String publicTwo;
 
     private String privateTwo;
 
-    public Reflect() {
+    public ReflectionTestClass() {
         this(null, null, null, null);
     }
 
     @Deprecated
-    public Reflect(String publicTwo) {
-        this(null, null, publicTwo, null);
+    public ReflectionTestClass(String privateTwo) {
+        this(null, null, null,privateTwo );
     }
 
-    private Reflect(String publicOne, String privateOne, String publicTwo, String privateTwo) {
+    private ReflectionTestClass(String publicOne, String privateOne, String publicTwo, String privateTwo) {
         super(publicOne, privateOne);
         this.publicTwo = publicTwo;
         this.privateTwo = privateTwo;
@@ -51,14 +49,19 @@ public class Reflect extends ReflectRoot {
     }
 
 
-    public String returnValue(String value){
-       return  value;
+    public String returnValue(String value) {
+        return value;
     }
+
     @Override
     public String toString() {
         return "Reflect{" +
                 "publicTwo='" + publicTwo + '\'' +
                 ", privateTwo='" + privateTwo + '\'' +
                 '}';
+    }
+
+    private String showPrivateTwo() {
+        return privateTwo;
     }
 }

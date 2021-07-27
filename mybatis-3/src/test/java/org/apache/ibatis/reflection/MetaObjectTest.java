@@ -199,6 +199,7 @@ class MetaObjectTest {
     HashMap<String, String> map = new HashMap<>();
     MetaObject metaMap = SystemMetaObject.forObject(map);
 
+    // .  来处理嵌套类型
     assertTrue(metaMap.hasSetter("id"));
     assertTrue(metaMap.hasSetter("name.first"));
     assertTrue(metaMap.hasSetter("address.street"));

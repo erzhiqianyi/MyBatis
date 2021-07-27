@@ -25,6 +25,9 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.*;
 
+/**
+ * 参数名解析器,参数转化成SQL语句执行参数,处理字符串
+ */
 public class ParamNameResolver {
 
   public static final String GENERIC_NAME_PREFIX = "param";
@@ -48,6 +51,7 @@ public class ParamNameResolver {
 
   private boolean hasParamAnnotation;
 
+  //从配置中解析参数名
   public ParamNameResolver(Configuration config, Method method) {
     this.useActualParamName = config.isUseActualParamName();
     final Class<?>[] paramTypes = method.getParameterTypes();

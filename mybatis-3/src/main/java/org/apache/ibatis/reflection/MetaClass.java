@@ -27,6 +27,7 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 
 /**
+ * 元类
  * @author Clinton Begin
  */
 public class MetaClass {

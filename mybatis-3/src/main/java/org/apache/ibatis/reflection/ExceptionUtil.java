@@ -19,6 +19,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.UndeclaredThrowableException;
 
 /**
+ * 异常拆包，得到具体的异常信息
  * @author Clinton Begin
  */
 public class ExceptionUtil {

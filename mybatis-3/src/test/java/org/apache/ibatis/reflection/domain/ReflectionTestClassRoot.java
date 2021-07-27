@@ -1,20 +1,21 @@
 package org.apache.ibatis.reflection.domain;
 
-public class ReflectRoot {
+@Deprecated
+public class ReflectionTestClassRoot {
 
     public String publicOne;
 
     private String privateOne;
 
-    public ReflectRoot() {
+    public ReflectionTestClassRoot() {
         this(null, null);
     }
 
-    private ReflectRoot(String publicOne) {
+    private ReflectionTestClassRoot(String publicOne) {
         this(publicOne, null);
     }
 
-    public ReflectRoot(String publicOne, String privateOne) {
+    public ReflectionTestClassRoot(String publicOne, String privateOne) {
         this.publicOne = publicOne;
         this.privateOne = privateOne;
     }

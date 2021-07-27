@@ -33,6 +33,7 @@ class ReflectorTest {
   void testGetSetterType() {
     ReflectorFactory reflectorFactory = new DefaultReflectorFactory();
     Reflector reflector = reflectorFactory.findForClass(Section.class);
+    //得到setter 的类型
     Assertions.assertEquals(Long.class, reflector.getSetterType("id"));
   }
 

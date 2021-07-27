@@ -3,53 +3,59 @@
 Myabits source read note and sample
 
 ## 目录
+
 - [源码阅读的意义](#源码阅读的意义)
-  - [为什么要阅读源码](#为什么要阅读源码)
-  - [如何阅读源码](#如何阅读源码)
-  - [为什么阅读MyBatis源码](#[为什么阅读MyBatis源码)
-  - [源码阅读流程](#源码阅读流程)
+    - [为什么要阅读源码](#为什么要阅读源码)
+    - [如何阅读源码](#如何阅读源码)
+    - [为什么阅读MyBatis源码](#[为什么阅读MyBatis源码)
+    - [源码阅读流程](#源码阅读流程)
 - [Mybatis概述](#Mybatis概述)
-  - [JDBC如何处理数据库操作](#JDBC如何处理数据库操作)
-  - [ORM框架](#ORM框架)
-  - [MyBatis特点](#MyBatis特点)
-  - [MyBatis配置方式](#MyBatis配置方式)
-  - [MyBatis使用示例](#MyBatis使用示例)
-    - [单独使用](#单独使用)
-    - [在SpringBoot中使用](#在SpringBoot中使用)
-  - [MyBatis核心业务功能](#MyBatis核心业务功能)
+    - [JDBC如何处理数据库操作](#JDBC如何处理数据库操作)
+    - [ORM框架](#ORM框架)
+    - [MyBatis特点](#MyBatis特点)
+    - [MyBatis配置方式](#MyBatis配置方式)
+    - [MyBatis使用示例](#MyBatis使用示例)
+        - [单独使用](#单独使用)
+        - [在SpringBoot中使用](#在SpringBoot中使用)
+    - [MyBatis核心业务功能](#MyBatis核心业务功能)
 - [MyBatis跟踪调试](#MyBatis跟踪调试)
-  - [类加载流程](#类加载流程)
-  - [MaBatis业务流程](#MaBatis业务流程)
-    - [初始化阶段](#初始化阶段)
-      - [静态代码块执行](#静态代码块执行)
-      - [读取配置文件](#读取配置文件)
-      - [解析配置文件](#解析配置文件)
-    - [数据读写阶段](#数据读写阶段)
-      - [创建SqlSessionFactory对象](#创建SqlSessionFactory对象)
-      - [获取SqlSession](#获取SqlSession)
-      - [映射接口与映射文件的绑定](#映射接口与映射文件的绑定)
-      - [映射接口的代理](#映射接口的代理)
-      - [SQL语句查找](#SQL语句查找)
-      - [查询结果缓存](#查询结果缓存)
-      - [数据库查询](#数据库查询)
-      - [处理结果集](#处理结果集)
+    - [类加载流程](#类加载流程)
+    - [MaBatis业务流程](#MaBatis业务流程)
+        - [初始化阶段](#初始化阶段)
+            - [静态代码块执行](#静态代码块执行)
+            - [读取配置文件](#读取配置文件)
+            - [解析配置文件](#解析配置文件)
+        - [数据读写阶段](#数据读写阶段)
+            - [创建SqlSessionFactory对象](#创建SqlSessionFactory对象)
+            - [获取SqlSession](#获取SqlSession)
+            - [映射接口与映射文件的绑定](#映射接口与映射文件的绑定)
+            - [映射接口的代理](#映射接口的代理)
+            - [SQL语句查找](#SQL语句查找)
+            - [查询结果缓存](#查询结果缓存)
+            - [数据库查询](#数据库查询)
+            - [处理结果集](#处理结果集)
 - [MyBatis源码架构](#MyBatis源码架构)
 - [Mybatis分包](#Mybatis分包)
-  - [基础功能](#基础功能)
-     - [exceptions](#exceptions)
-        - [Java中的异常](#Java中的异常)
-     - [reflection](#reflection)
-        - [装饰器模式](#装饰器模式)
-        - [反射](#反射)
-          - [反射功能](#反射功能)
-          - [反射基础包](#反射基础包)
-          - [反射常用操作](#反射常用操作)
-  - [配置解析](#配置解析)
-  - [核心操作](#核心操作)
+    - [基础功能](#基础功能)
+        - [exceptions](#exceptions)
+            - [Java中的异常](#Java中的异常)
+        - [reflection](#reflection)
+            - [装饰器模式](#装饰器模式)
+            - [反射](#反射)
+                - [反射功能](#反射功能)
+                - [反射基础包](#反射基础包)
+                - [反射常用操作](#反射常用操作)
+            - [工厂模式](#工厂模式)
+    - [配置解析](#配置解析)
+    - [核心操作](#核心操作)
 - [阅读技巧](#阅读技巧)
 - [设计思想](#设计思想)
-  - [包划分](#包划分)
+    - [包划分](#包划分)
+- [代码实践](#代码实践)
+  - [工具类构造器私有化](#工具类构造器私有化)
+
 ## 源码阅读的意义
+
 ### 为什么要阅读源码
 
 - 理解MyBatis实现原理
@@ -89,8 +95,7 @@ Myabits source read note and sample
 
 ### MyBatis特点
 
-- 核心映射 
-  Java方法与SQL语句关联，SQL语句的参数或结果和对象关联，屏蔽关系型数据库，面向对象的方式进行数据库读写。
+- 核心映射 Java方法与SQL语句关联，SQL语句的参数或结果和对象关联，屏蔽关系型数据库，面向对象的方式进行数据库读写。
 - 缓存功能
 - 懒加载功能
 - 主键自增功能
@@ -561,7 +566,7 @@ public class MapperRegistry {
 
 ```
 
--  工厂模式
+- 工厂模式
 
 需要什么类型，就给到什么类型
 
@@ -724,162 +729,283 @@ ResultHandler处理成需要的对象
 
 ```java
 public class DefaultResultSetHandler implements ResultSetHandler {
-  @Override
-  public List<Object> handleResultSets(Statement stmt) throws SQLException {
-    ErrorContext.instance().activity("handling results").object(mappedStatement.getId());
+    @Override
+    public List<Object> handleResultSets(Statement stmt) throws SQLException {
+        ErrorContext.instance().activity("handling results").object(mappedStatement.getId());
 
-    final List<Object> multipleResults = new ArrayList<>();
+        final List<Object> multipleResults = new ArrayList<>();
 
-    int resultSetCount = 0;
-    ResultSetWrapper rsw = getFirstResultSet(stmt);
+        int resultSetCount = 0;
+        ResultSetWrapper rsw = getFirstResultSet(stmt);
 
-    List<ResultMap> resultMaps = mappedStatement.getResultMaps();
-    int resultMapCount = resultMaps.size();
-    validateResultMapsCount(rsw, resultMapCount);
-    while (rsw != null && resultMapCount > resultSetCount) {
-      ResultMap resultMap = resultMaps.get(resultSetCount);
-      handleResultSet(rsw, resultMap, multipleResults, null);
-      rsw = getNextResultSet(stmt);
-      cleanUpAfterHandlingResultSet();
-      resultSetCount++;
-    }
-
-    String[] resultSets = mappedStatement.getResultSets();
-    if (resultSets != null) {
-      while (rsw != null && resultSetCount < resultSets.length) {
-        ResultMapping parentMapping = nextResultMaps.get(resultSets[resultSetCount]);
-        if (parentMapping != null) {
-          String nestedResultMapId = parentMapping.getNestedResultMapId();
-          ResultMap resultMap = configuration.getResultMap(nestedResultMapId);
-          handleResultSet(rsw, resultMap, null, parentMapping);
+        List<ResultMap> resultMaps = mappedStatement.getResultMaps();
+        int resultMapCount = resultMaps.size();
+        validateResultMapsCount(rsw, resultMapCount);
+        while (rsw != null && resultMapCount > resultSetCount) {
+            ResultMap resultMap = resultMaps.get(resultSetCount);
+            handleResultSet(rsw, resultMap, multipleResults, null);
+            rsw = getNextResultSet(stmt);
+            cleanUpAfterHandlingResultSet();
+            resultSetCount++;
         }
-        rsw = getNextResultSet(stmt);
-        cleanUpAfterHandlingResultSet();
-        resultSetCount++;
-      }
+
+        String[] resultSets = mappedStatement.getResultSets();
+        if (resultSets != null) {
+            while (rsw != null && resultSetCount < resultSets.length) {
+                ResultMapping parentMapping = nextResultMaps.get(resultSets[resultSetCount]);
+                if (parentMapping != null) {
+                    String nestedResultMapId = parentMapping.getNestedResultMapId();
+                    ResultMap resultMap = configuration.getResultMap(nestedResultMapId);
+                    handleResultSet(rsw, resultMap, null, parentMapping);
+                }
+                rsw = getNextResultSet(stmt);
+                cleanUpAfterHandlingResultSet();
+                resultSetCount++;
+            }
+        }
+
+        return collapseSingleResultList(multipleResults);
     }
 
-    return collapseSingleResultList(multipleResults);
-  }
- 
 }
 ```
-- createResultObject()
-创建输出结果对象
-使用类型处理器或构造方法来构建输出对象。
-- applyAutomaticMappings()
-将数据记录的值赋给输出对象，需要开启属性自动映射
-循环遍历属性，然后调用"metaObject.setValue（mapping.property，value）"语句为属性赋值。
-- applyPropertyMappings
-按照映射设置，给输出结果对象的属性赋值。对应mapper中的resultMap
 
+- createResultObject()
+  创建输出结果对象 使用类型处理器或构造方法来构建输出对象。
+- applyAutomaticMappings()
+  将数据记录的值赋给输出对象，需要开启属性自动映射 循环遍历属性，然后调用"metaObject.setValue（mapping.property，value）"语句为属性赋值。
+- applyPropertyMappings 按照映射设置，给输出结果对象的属性赋值。对应mapper中的resultMap
 
 ## MyBatis源码架构
+
 ### Mybatis分包
+
 #### 基础功能
+
 基础功能,工具类,日志,异常处理,文件IO
+
 - [annotations](mybatis-3/src/main/java/org/apache/ibatis/annotations)
+
 ##### exceptions
+
 异常工厂和Mybatis异常父类
 [exceptions代码](mybatis-3/src/main/java/org/apache/ibatis/exceptions)  
 ![](uml/MyBatisException.png)
-#####  Java中的异常
+
+##### Java中的异常
+
 “异常”代表程序运行中遇到了意料之外的事情，父类为 Throwable
+
 - Throwable
-  - Error及其子类
-    代表了 JVM自身的异常。这一类异常发生时，无法通过程序来修正。最可靠的方式就是尽快停止 JVM的运行。
-  - Exception
-    代表程序运行中发生了意料之外的事情, 可以通过Java异常处理机制处理。
-    - RuntimeException
-        运行时异常,如空指针异常,
-    - CheckException
-        受检查异常，不可预知和避免，需要处理
-      
+    - Error及其子类 代表了 JVM自身的异常。这一类异常发生时，无法通过程序来修正。最可靠的方式就是尽快停止 JVM的运行。
+    - Exception 代表程序运行中发生了意料之外的事情, 可以通过Java异常处理机制处理。
+        - RuntimeException 运行时异常,如空指针异常,
+        - CheckException 受检查异常，不可预知和避免，需要处理
+
 - [io](mybatis-3/src/main/java/org/apache/ibatis/io)
 - [lang](mybatis-3/src/main/java/org/apache/ibatis/lang)
 - [logging](mybatis-3/src/main/java/org/apache/ibatis/logging)
+
 ##### reflection
-反射功能
+
+封装常用反射操作，对对象进行反射包装，方便反射操作
 [reflection代码](mybatis-3/src/main/java/org/apache/ibatis/reflection)
+
 ##### 装饰器模式
-装饰器模式又称包装模式，是一种结构型模式。这种设计模式是指能够在一个类的基础上增加一个装饰类（也可以叫包装类），并在装饰类中增加一些新的特性和功能。
-这样，通过对原有类的包装，就可以在不改变原有类的情况下为原有类增加更多的功能。
+
+装饰器模式又称包装模式，是一种结构型模式。这种设计模式是指能够在一个类的基础上增加一个装饰类（也可以叫包装类），并在装饰类中增加一些新的特性和功能。 这样，通过对原有类的包装，就可以在不改变原有类的情况下为原有类增加更多的功能。
 [示例代码](mybatis-3/src/test/java/org/apache/ibatis/reflection/patterns)
+
 ##### 反射
+
 通过反射，能够在类的运行过程中知道这个类有哪些属性和方法，还可以修改属性、调用方法、建立类的实例。
+
 ##### 反射功能
+
 - 在运行时判断任意一个对象所属的类
 - 在运行时构造任意一个类的对象
 - 在运行时修改任意一个对象的成员变量
 - 在运行时调用任意一个对象的方法
+
 ##### 反射基础包
+
 围绕 Java 类的成员展开,属性字段、构造函数、方法及各个上面的注解
+
 - Object  
-所有类的父类,提供基本方法
-  - getClass()
-     获取对象类类型
+  所有类的父类,提供基本方法
+    - getClass()
+      获取对象类类型
 - Class  
-正在运行的 Java 应用程序中的类的实例。
-- Method
-类的方法信息
-- Constructor 
-构造方法信息
-- Field 
-类的属性信息
-- Annotation 
-注解信息，类，方法，字段上都可以有
+  正在运行的 Java 应用程序中的类的实例。
+- Method 类的方法信息
+- Constructor 构造方法信息
+- Field 类的属性信息
+- Annotation 注解信息，类，方法，字段上都可以有
 
 ##### 反射常用操作
+
 [示例代码](mybatis-3/src/test/java/org/apache/ibatis/reflection/ReflectionTest.java)
+
 ###### 获取Class对象
+
 - Class.forName()
- 需要类的全路径名
-- Object.class
-需要导入类的包
+  需要类的全路径名
+- Object.class 需要导入类的包
 - getClass()
-已经有对象
+  已经有对象
+
 ###### 获取成员变量
+
 - getDeclaredFields()
   获取所有字段,无法获取父类字段
-``` checkMemberAccess(sm, Member.DECLARED, Reflection.getCallerClass(), true);```
-- getFields() 
+  ``` checkMemberAccess(sm, Member.DECLARED, Reflection.getCallerClass(), true);```
+- getFields()
   获取 public 字段
-    ```checkMemberAccess(sm, Member.PUBLIC, Reflection.getCallerClass(), true);```
+  ```checkMemberAccess(sm, Member.PUBLIC, Reflection.getCallerClass(), true);```
+
 ###### 获取构造方法
-- getDeclaredConstructors() 
-获取所有构造器
-- getConstructors() 
-获取 pulibkc 构造器
+
+- getDeclaredConstructors()
+  获取所有构造器
+- getConstructors()
+  获取 pulibkc 构造器
+
 ###### 获取非构造方法
-- getDeclaredMethods() 
-获取所有方法，不包括父类的方法
-- getMethods() 
-获取所有 public 方法,包含父类
+
+- getDeclaredMethods()
+  获取所有方法，不包括父类的方法
+- getMethods()
+  获取所有 public 方法,包含父类
+
 ###### 获取注解
+
 通过Class,Filed，Method,Constructor等对象获取到对应的注解信息
+
 - getAnnotations()
-获取到所有注解
+  获取到所有注解
+
 ###### 调用方法
+
 - invoke()执行方法
+
 ###### 动态构建对象，访问私有字段和方法
+
 - 先拿到Class对象
 - 创建对象
     - newInstance()
-        需要无参构造器
-    -  通过Constructor 构造对象
-        拿到构造器，用构造器来newInstance()
-        
+      需要无参构造器
+    - 通过Constructor 构造对象 拿到构造器，用构造器来newInstance()
+- 操作字段
+    - 获取字段: getDeclaredField(String name)
+    - 设置访问权限:setAccessible()
+    - 设置值:set(Object obj, Object value)
+- 操作方法
+    - 获取方法:  getDeclaredMethod(String name, Class<?>... parameterTypes)
+    - 设置访问权限: setAccessible(boolean flag)
+    - 执行方法: invoke(Object obj, Object... args)
 ###### 动态代理
+直接创建接口的实例
+通过 ```Roroxy.newInstance()``` 创建接口对象
+
 利用反射实现动态代理
+
+#### 工厂模式
+ObjectFactory
+```java
+public interface ObjectFactory {
+    /**
+     * 设置工厂属性
+     */
+  default void setProperties(Properties properties) {
+    // NOP
+  }
+
+    /**
+     * 使用默认构造器创建对象
+     */
+  <T> T create(Class<T> type);
+
+
+    /**
+     * 使用给定的构造器创建对象
+     */
+  <T> T create(Class<T> type, List<Class<?>> constructorArgTypes, List<Object> constructorArgs);
+
+  
+  <T> boolean isCollection(Class<T> type);
+
+}
+```
+DefaultObjectFactory 默认实现
+##### 类型实现
+- List,Collection,Iterable
+  转成 ArrayList
+- Map
+  转成 HashMap
+- SortedSet
+  转成 TreeSet
+- Set
+  转成 HashSet
+- 其他类型
+  转成原始类型
+#### 执行器 Invoker
+```java
+public interface Invoker {
+  Object invoke(Object target, Object[] args) throws IllegalAccessException, InvocationTargetException;
+
+  Class<?> getType();
+}
+
+```
+##### GetFieldInvoker 
+对象属性的读操作
+##### SetFieldInvoker
+对象属性的写操作
+##### MethodInvoker
+其他方法的操作
+#### MyBatis反射核心
+```Reflector```
+```java
+public class Reflector {
+
+    //要解析的类
+    private final Class<?> type;
+    //可读属性名字
+    private final String[] readablePropertyNames;
+    //可写属性名字
+    private final String[] writablePropertyNames;
+
+    // setter和属性映射,键为属性名，对应相应的setter
+    private final Map<String, Invoker> setMethods = new HashMap<>();
+
+    // getter和属性映射,键为属性名，对应相应的getter
+    private final Map<String, Invoker> getMethods = new HashMap<>();
+
+    // setter 输入类型，键为属性名，对应相应的输入类型
+    private final Map<String, Class<?>> setTypes = new HashMap<>();
+
+    //getter 输出类型，键为属性名，对应相应的输出类型
+    private final Map<String, Class<?>> getTypes = new HashMap<>();
+
+    //默认构造参数
+    private Constructor<?> defaultConstructor;
+
+    private Map<String, String> caseInsensitivePropertyMap = new HashMap<>();
+}
+```
 - [parsing](mybatis-3/src/main/java/org/apache/ibatis/parsing)
 - [type](mybatis-3/src/main/java/org/apache/ibatis/type)
+
 #### 配置解析
+
 - [binding](mybatis-3/src/main/java/org/apache/ibatis/binding)
 - [builder](mybatis-3/src/main/java/org/apache/ibatis/builder)
 - [mapping](mybatis-3/src/main/java/org/apache/ibatis/mapping)
 - [scripting](mybatis-3/src/main/java/org/apache/ibatis/scripting)
 - [datasource](mybatis-3/src/main/java/org/apache/ibatis/datasource)
+
 #### 核心操作
+
 - [cache](mybatis-3/src/main/java/org/apache/ibatis/cache)
 - [cursor](mybatis-3/src/main/java/org/apache/ibatis/cursor)
 - [executor](mybatis-3/src/main/java/org/apache/ibatis/executor)
@@ -890,11 +1016,17 @@ public class DefaultResultSetHandler implements ResultSetHandler {
 - [util](mybatis-3/src/main/java/org/apache/ibatis/util)
 
 ## 阅读技巧
+
 - 绘制UML类图厘清类之间的关系
+
 ## 设计思想
+
 ### 包划分
-- 按照类型划分
- 功能耦合度低供多个功能使用的类按类型划分 
-- 按照功能方式划分
- 将耦合度高的类按照功能划分
-  
+
+- 按照类型划分 功能耦合度低供多个功能使用的类按类型划分
+- 按照功能方式划分 将耦合度高的类按照功能划分
+
+
+## 代码实践
+### 工具类构造器私有化
+工具类构造器私有化，避免被实例

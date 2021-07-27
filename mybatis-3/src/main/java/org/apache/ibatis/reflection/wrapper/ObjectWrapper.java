@@ -22,6 +22,7 @@ import org.apache.ibatis.reflection.property.PropertyTokenizer;
 import java.util.List;
 
 /**
+ * 装饰器模式，对类型进行封装，增加功能
  * @author Clinton Begin
  */
 public interface ObjectWrapper {

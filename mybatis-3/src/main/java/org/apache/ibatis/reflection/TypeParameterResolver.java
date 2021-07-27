@@ -19,11 +19,14 @@ import java.lang.reflect.*;
 import java.util.Arrays;
 
 /**
+ * 类型解析器
  * @author Iwao AVE!
  */
 public class TypeParameterResolver {
 
+
   /**
+   * 解析属性的泛型
    * Resolve field type.
    *
    * @param field
@@ -40,6 +43,7 @@ public class TypeParameterResolver {
   }
 
   /**
+   *  解析方法返回值的泛型
    * Resolve return type.
    *
    * @param method
@@ -56,6 +60,7 @@ public class TypeParameterResolver {
   }
 
   /**
+   * 解决输入参加的泛型
    * Resolve param types.
    *
    * @param method

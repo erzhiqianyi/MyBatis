@@ -28,9 +28,16 @@ public final class PropertyCopier {
     // Prevent Instantiation of Static Class
   }
 
+  /**
+   * 复制属性
+   * @param type 类型
+   * @param sourceBean 源对象
+   * @param destinationBean 目标对象
+   */
   public static void copyBeanProperties(Class<?> type, Object sourceBean, Object destinationBean) {
     Class<?> parent = type;
     while (parent != null) {
+      //只获取自己所有字段，通过迭代去获取父类
       final Field[] fields = parent.getDeclaredFields();
       for (Field field : fields) {
         try {
@@ -48,6 +55,7 @@ public final class PropertyCopier {
           // Nothing useful to do, will only fail on final fields, which will be ignored.
         }
       }
+      //通过迭代获取父类
       parent = parent.getSuperclass();
     }
   }

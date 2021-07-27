@@ -44,6 +44,7 @@ class TypeParameterResolverTest {
     Class<?> clazz = Level0Mapper.class;
     Method method = clazz.getMethod("simpleSelect");
     Type result = TypeParameterResolver.resolveReturnType(method, clazz);
+    //得到方法返回结果类型
     assertEquals(Double.class, result);
   }
 

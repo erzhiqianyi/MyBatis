@@ -1,6 +1,6 @@
 package org.apache.ibatis.reflection;
 
-import org.apache.ibatis.reflection.domain.Reflect;
+import org.apache.ibatis.reflection.domain.ReflectionTestClass;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -24,8 +24,8 @@ public class ReflectionTest {
     @Test
     public void testGetClass() throws ClassNotFoundException {
         Class reflectClass = Class.forName(reflectClassPackage);
-        Class reflectClass2 = Reflect.class;
-        Reflect reflect = new Reflect();
+        Class reflectClass2 = ReflectionTestClass.class;
+        ReflectionTestClass reflect = new ReflectionTestClass();
         Class reflectClass3 = reflect.getClass();
         assertEquals(reflectClass, reflectClass2);
         assertEquals(reflectClass, reflectClass3);
@@ -128,15 +128,29 @@ public class ReflectionTest {
     }
 
     @Test
-    public void testCreateObject() throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException {
-        String info = "hello";
+    public void testCreateObject() throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         Class reflectClass = Class.forName(reflectClassPackage);
         Object objectOne = reflectClass.newInstance();
-        assertTrue(objectOne instanceof Reflect);
-        Object objectTwo = reflectClass.getConstructor(String.class);
-        assertTrue(objectOne instanceof Reflect);
-        assertNotEquals(objectOne,objectTwo);
+        assertTrue(objectOne instanceof ReflectionTestClass);
+        assertTrue(objectOne instanceof ReflectionTestClass);
+        Constructor constructor = reflectClass.getConstructor();
+        Object objectTwo = constructor.newInstance();
+        assertTrue(objectTwo instanceof ReflectionTestClass);
+    }
 
+    @Test
+    public void testReflect() throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException {
+        String hello = "hello";
+        Class reflectClass = Class.forName(reflectClassPackage);
+        Object object = reflectClass.newInstance();
+        Field privateTwoField = reflectClass.getDeclaredField("privateTwo");
+        privateTwoField.setAccessible(true);
+        privateTwoField.set(object, hello);
+        privateTwoField.setAccessible(false);
+        Method showPrivateTwoMethod = reflectClass.getDeclaredMethod("showPrivateTwo");
+        showPrivateTwoMethod.setAccessible(true);
+        String result = (String) showPrivateTwoMethod.invoke(object);
+        assertEquals(hello,result);
     }
 
 
