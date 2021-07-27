@@ -786,7 +786,7 @@ public class DefaultResultSetHandler implements ResultSetHandler {
 
 - [annotations](mybatis-3/src/main/java/org/apache/ibatis/annotations)
 
-##### exceptions
+#### exceptions
 
 异常工厂和Mybatis异常父类
 [exceptions代码](mybatis-3/src/main/java/org/apache/ibatis/exceptions)  
@@ -806,7 +806,7 @@ public class DefaultResultSetHandler implements ResultSetHandler {
 - [lang](mybatis-3/src/main/java/org/apache/ibatis/lang)
 - [logging](mybatis-3/src/main/java/org/apache/ibatis/logging)
 
-##### reflection
+#### reflection
 
 封装常用反射操作，对对象进行反射包装，方便反射操作
 [reflection代码](mybatis-3/src/main/java/org/apache/ibatis/reflection)
