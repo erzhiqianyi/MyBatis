@@ -43,6 +43,7 @@ Myabits source read note and sample
         - [反射](#反射)
           - [反射功能](#反射功能)
           - [反射基础包](#反射基础包)
+          - [反射常用操作](#反射常用操作)
   - [配置解析](#配置解析)
   - [核心操作](#核心操作)
 - [阅读技巧](#阅读技巧)
@@ -819,7 +820,57 @@ public class DefaultResultSetHandler implements ResultSetHandler {
      获取对象类类型
 - Class  
 正在运行的 Java 应用程序中的类的实例。
-###### 
+- Method
+类的方法信息
+- Constructor 
+构造方法信息
+- Field 
+类的属性信息
+- Annotation 
+注解信息，类，方法，字段上都可以有
+
+##### 反射常用操作
+[示例代码](mybatis-3/src/test/java/org/apache/ibatis/reflection/ReflectionTest.java)
+###### 获取Class对象
+- Class.forName()
+ 需要类的全路径名
+- Object.class
+需要导入类的包
+- getClass()
+已经有对象
+###### 获取成员变量
+- getDeclaredFields()
+  获取所有字段,无法获取父类字段
+``` checkMemberAccess(sm, Member.DECLARED, Reflection.getCallerClass(), true);```
+- getFields() 
+  获取 public 字段
+    ```checkMemberAccess(sm, Member.PUBLIC, Reflection.getCallerClass(), true);```
+###### 获取构造方法
+- getDeclaredConstructors() 
+获取所有构造器
+- getConstructors() 
+获取 pulibkc 构造器
+###### 获取非构造方法
+- getDeclaredMethods() 
+获取所有方法，不包括父类的方法
+- getMethods() 
+获取所有 public 方法,包含父类
+###### 获取注解
+通过Class,Filed，Method,Constructor等对象获取到对应的注解信息
+- getAnnotations()
+获取到所有注解
+###### 调用方法
+- invoke()执行方法
+###### 动态构建对象，访问私有字段和方法
+- 先拿到Class对象
+- 创建对象
+    - newInstance()
+        需要无参构造器
+    -  通过Constructor 构造对象
+        拿到构造器，用构造器来newInstance()
+        
+###### 动态代理
+利用反射实现动态代理
 - [parsing](mybatis-3/src/main/java/org/apache/ibatis/parsing)
 - [type](mybatis-3/src/main/java/org/apache/ibatis/type)
 #### 配置解析
