@@ -20,6 +20,7 @@ import org.apache.ibatis.mapping.ResultMap;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.type.*;
 
+import java.lang.annotation.*;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -29,7 +30,6 @@ import java.util.*;
  * @author Iwao AVE!
  */
 public class ResultSetWrapper {
-
   private final ResultSet resultSet;
   private final TypeHandlerRegistry typeHandlerRegistry;
   private final List<String> columnNames = new ArrayList<>();

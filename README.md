@@ -37,6 +37,11 @@ Myabits source read note and sample
 - [MyBatis源码架构](#MyBatis源码架构)
 - [Mybatis分包](#Mybatis分包)
     - [基础功能](#基础功能)
+        - [annotations](#annotations)
+            - [Java注解](#Java注解)
+              - [元注解](#元注解)
+              - [自定义注解](#自定义注解)
+            - [param注解](#param注解)
         - [exceptions](#exceptions)
             - [Java中的异常](#Java中的异常)
         - [reflection](#reflection)
@@ -784,10 +789,142 @@ public class DefaultResultSetHandler implements ResultSetHandler {
 
 基础功能,工具类,日志,异常处理,文件IO
 
-- [annotations](mybatis-3/src/main/java/org/apache/ibatis/annotations)
+#### annotations
+ [annotations代码](mybatis-3/src/main/java/org/apache/ibatis/annotations)
 
+##### Java注解
+标记作用
+###### 元注解
+用来注解其他注解的的注解，
+- @Target 
+用来标记注解可以用在什么地方,类型为,可以同时使用多个
+```java
+public enum ElementType {
+    /** 
+     * Class, interface (including annotation type), or enum declaration 
+     * 类，接口，注解，枚举
+     * */
+    TYPE,
+
+    /** 
+     * Field declaration (includes enum constants) 
+     * 字段
+     * */
+    FIELD,
+
+    /** 
+     * Method declaration 
+     * 方法
+     * */
+    METHOD,
+
+    /**
+     *  Formal parameter declaration 
+     *  参数
+     * */
+    PARAMETER,
+
+    /** 
+     * Constructor declaration 
+     * 构造器
+     * 
+     * */
+    CONSTRUCTOR,
+
+    /**
+     *  Local variable declaration 
+     *  局部变量
+     * */
+    LOCAL_VARIABLE,
+
+    /** 
+     * Annotation type declaration 
+     * 注解
+     * */
+    ANNOTATION_TYPE,
+
+    /** 
+     * Package declaration 
+     * 包
+     * */
+    PACKAGE,
+
+    /**
+     * Type parameter declaration
+     * 类型参数
+     * @since 1.8
+     */
+    TYPE_PARAMETER,
+
+    /**
+     * Use of a type
+     * 类型使用
+     * @since 1.8
+     */
+    TYPE_USE
+}
+``` 
+
+- @Retention
+注解的生命周期，注解会保留到哪一阶
+```java
+public enum RetentionPolicy {
+    /**
+     * Annotations are to be discarded by the compiler.
+     * 保留到源代码阶段，编译时会被擦除
+     */
+    SOURCE,
+
+    /**
+     * Annotations are to be recorded in the class file by the compiler
+     * but need not be retained by the VM at run time.  This is the default
+     * behavior.
+     * 保留到类文件阶段，在JVM运行时不包含这些信息
+     */
+    CLASS,
+
+    /**
+     * Annotations are to be recorded in the class file by the compiler and
+     * retained by the VM at run time, so they may be read reflectively.
+     * 保留到JVM运行阶段
+     * @see java.lang.reflect.AnnotatedElement
+     */
+    RUNTIME
+}
+
+```
+
+- @Documented
+注解会在javadoc中生成
+  
+- @Inherited
+允许子类继承父类的该注解，不能从接口继承
+  
+- @Repeatable
+jdk8引入,注解可以在同一个地方可以重复使用多次
+  
+###### 自定义注解
+使用元注解配置注解信息 
+[自定义注解示例](mybatis-3/src/test/java/org/apache/ibatis/annotation/CustomizeAnnotationTest.java)
+
+##### param注解
+在参数上使用该注解对参数进行命名，在映射文件中则可以使用该名字，可以实现字段名字的替换.
+在ParamNameResolver中实现替换。
+
+```java
+@Documented
+@Retention(RetentionPolicy.RUNTIME) //保存到运行时
+@Target(ElementType.PARAMETER) //只能用狂参数数
+public @interface Param {
+    /**
+     * Returns the parameter name.
+     * 参数名字
+     * @return the parameter name
+     */
+    String value();
+}
+```
 #### exceptions
-
 异常工厂和Mybatis异常父类
 [exceptions代码](mybatis-3/src/main/java/org/apache/ibatis/exceptions)  
 ![](uml/MyBatisException.png)
