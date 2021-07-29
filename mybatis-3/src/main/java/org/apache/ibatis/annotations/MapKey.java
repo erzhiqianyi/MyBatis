@@ -19,7 +19,7 @@ import java.lang.annotation.*;
 
 /**
  * The annotation that specify the property name(or column name) for a key value of {@link java.util.Map}.
- *
+ * 定义map的key
  * <p>
  * <b>How to use:</b>
  *

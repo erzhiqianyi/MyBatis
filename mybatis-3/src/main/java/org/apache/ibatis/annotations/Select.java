@@ -19,7 +19,7 @@ import java.lang.annotation.*;
 
 /**
  * The annotation that specify an SQL for retrieving record(s).
- *
+ * 定义查询语句
  * <p>
  * <b>How to use:</b>
  *

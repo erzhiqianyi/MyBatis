@@ -19,7 +19,7 @@ import java.lang.annotation.*;
 
 /**
  * The annotation that specify the parameter name.
- *
+ * 定义参数名字
  * <p>
  * <b>How to use:</b>
  *

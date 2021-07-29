@@ -19,7 +19,7 @@ import java.lang.annotation.*;
 
 /**
  * The annotation that specify a method that provide an SQL for inserting record(s).
- *
+ * 定义插入语句提供方
  * <p>
  * <b>How to use:</b>
  *

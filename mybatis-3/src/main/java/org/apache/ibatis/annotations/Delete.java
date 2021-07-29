@@ -19,7 +19,7 @@ import java.lang.annotation.*;
 
 /**
  * The annotation that specify an SQL for deleting record(s).
- *
+ * 定义删除语句
  * <p>
  * <b>How to use:</b>
  *

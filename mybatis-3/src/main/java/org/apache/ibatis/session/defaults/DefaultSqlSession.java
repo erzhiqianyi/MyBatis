@@ -150,6 +150,7 @@ public class DefaultSqlSession implements SqlSession {
       MappedStatement ms = configuration.getMappedStatement(statement);
       return executor.query(ms, wrapCollection(parameter), rowBounds, handler);
     } catch (Exception e) {
+      e.printStackTrace();
       throw ExceptionFactory.wrapException("Error querying database.  Cause: " + e, e);
     } finally {
       ErrorContext.instance().reset();

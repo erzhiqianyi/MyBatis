@@ -18,6 +18,7 @@ package org.apache.ibatis.annotations;
 import java.lang.annotation.*;
 
 /**
+ * 指向缓存
  * The annotation that reference a cache.
  *
  * <p>If you use this annotation, should be specified either {@link #value()} or {@link #name()} attribute.

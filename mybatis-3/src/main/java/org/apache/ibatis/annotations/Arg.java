@@ -22,8 +22,9 @@ import org.apache.ibatis.type.UnknownTypeHandler;
 import java.lang.annotation.*;
 
 /**
- * The annotation that specify a mapping definition for the constructor argument.
  *
+ * The annotation that specify a mapping definition for the constructor argument.
+ * 定义构造器参
  * @see ConstructorArgs
  * @author Clinton Begin
  */

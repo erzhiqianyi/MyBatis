@@ -40,4 +40,6 @@ public class AnnotatedSubject {
     this.height = height == null ? 0 : height;
     this.weight = weight == null ? 0 : weight;
   }
+
+
 }

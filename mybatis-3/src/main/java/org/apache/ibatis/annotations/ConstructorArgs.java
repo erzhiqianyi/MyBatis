@@ -19,7 +19,7 @@ import java.lang.annotation.*;
 
 /**
  * The annotation that be grouping mapping definitions for constructor.
- *
+ * 用来定义构造器，方便使用反射生成对应对象
  * <p>
  * <b>How to use:</b>
  *

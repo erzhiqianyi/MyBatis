@@ -41,7 +41,12 @@ Myabits source read note and sample
             - [Java注解](#Java注解)
               - [元注解](#元注解)
               - [自定义注解](#自定义注解)
-            - [param注解](#param注解)
+            - [Mybatis注解分类](#Mybatis注解分类)
+              - [定义SQL语句类型](#定义SQL语句类型)
+              - [处理输入参数](#处理输入参数)
+              - [处理返回结果](#处理返回结果)
+              - [处理缓存](#处理缓存)
+              - [通用功能](#通用功能)
         - [exceptions](#exceptions)
             - [Java中的异常](#Java中的异常)
         - [reflection](#reflection)
@@ -907,23 +912,27 @@ jdk8引入,注解可以在同一个地方可以重复使用多次
 使用元注解配置注解信息 
 [自定义注解示例](mybatis-3/src/test/java/org/apache/ibatis/annotation/CustomizeAnnotationTest.java)
 
-##### param注解
-在参数上使用该注解对参数进行命名，在映射文件中则可以使用该名字，可以实现字段名字的替换.
-在ParamNameResolver中实现替换。
-
-```java
-@Documented
-@Retention(RetentionPolicy.RUNTIME) //保存到运行时
-@Target(ElementType.PARAMETER) //只能用狂参数数
-public @interface Param {
-    /**
-     * Returns the parameter name.
-     * 参数名字
-     * @return the parameter name
-     */
-    String value();
-}
-```
+##### Mybatis注解分类
+###### 基础功能
+- @Mapper 定义类是Mybatis mapper
+- @Lang 定义语言驱动
+###### 定义SQL语句类型
+- @Select, @SelectProvider 查询语句
+- @Update, @UpdateProvider 更新语句
+- @Insert, @InsertProvider 插入语句
+- @Delete, @DeleteProvider 删除语句
+- @Flush 清除缓存
+###### 处理输入参数
+- @Param 定义参数名字 
+###### 处理返回结果
+- @Arg  构造器参数
+- @ConstructorArgs 构造器
+- @Many  定义一个 sql 语句返回集合
+- @MapKey 定义map返回的key
+###### 处理缓存
+- @CacheNamespace 缓存命名空间
+- @CacheNamespaceRef 缓存引用
+- @Property 注入缓存属性
 #### exceptions
 异常工厂和Mybatis异常父类
 [exceptions代码](mybatis-3/src/main/java/org/apache/ibatis/exceptions)  

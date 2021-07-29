@@ -35,4 +35,32 @@ public class PrimitiveSubject {
     this.active = active;
     this.dt = dt;
   }
+
+  public int getId() {
+    return id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public int getAge() {
+    return age;
+  }
+
+  public int getHeight() {
+    return height;
+  }
+
+  public int getWeight() {
+    return weight;
+  }
+
+  public boolean isActive() {
+    return active;
+  }
+
+  public Date getDt() {
+    return dt;
+  }
 }

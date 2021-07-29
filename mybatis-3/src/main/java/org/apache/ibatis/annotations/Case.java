@@ -22,7 +22,7 @@ import java.lang.annotation.Target;
 
 /**
  * The annotation that conditional mapping definition for {@link TypeDiscriminator}.
- *
+ * 处理条件
  * @see TypeDiscriminator
  * @see Result
  * @see Arg

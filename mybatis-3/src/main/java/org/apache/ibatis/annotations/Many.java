@@ -23,6 +23,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * 定义一个 sql 语句返回集合
  * The annotation that specify the nested statement for retrieving collections.
  *
  * @see Result

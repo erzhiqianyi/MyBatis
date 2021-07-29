@@ -23,7 +23,7 @@ import java.lang.annotation.*;
 
 /**
  * The annotation that specify to use cache on namespace(e.g. mapper interface).
- *
+ * 使用命名空间来定义缓存键
  * <p>
  * <b>How to use:</b>
  *

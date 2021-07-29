@@ -21,7 +21,7 @@ import java.lang.annotation.*;
 
 /**
  * The annotation that specify an SQL for retrieving a key value.
- *
+ * 接收一个返回结果
  * <p>
  * <b>How to use:</b>
  *

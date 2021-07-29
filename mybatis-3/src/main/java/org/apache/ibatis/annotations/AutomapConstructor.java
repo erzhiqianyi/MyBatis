@@ -19,7 +19,7 @@ import java.lang.annotation.*;
 
 /**
  * The marker annotation that indicate a constructor for automatic mapping.
- *
+ * 利用构造器来简化结果集的映射 ,按字段名字进行自动映射,结果转换时，有限考虑有此注解的构造
  * <p>
  * <b>How to use:</b>
  *

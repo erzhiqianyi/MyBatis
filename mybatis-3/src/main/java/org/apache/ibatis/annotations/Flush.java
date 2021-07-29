@@ -19,7 +19,7 @@ import java.lang.annotation.*;
 
 /**
  * The maker annotation that invoke a flush statements via Mapper interface.
- *
+ *  标记为 flush 语句
  * <p>
  * <b>How to use:</b>
  *

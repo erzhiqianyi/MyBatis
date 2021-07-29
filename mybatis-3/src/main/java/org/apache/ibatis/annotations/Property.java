@@ -21,6 +21,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * 注入属性名字
  * The annotation that inject a property value.
  *
  * @since 3.4.2

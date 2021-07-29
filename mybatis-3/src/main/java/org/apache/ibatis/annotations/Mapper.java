@@ -19,7 +19,7 @@ import java.lang.annotation.*;
 
 /**
  * Marker interface for MyBatis mappers.
- *
+ * 定义类时MyBatis  Mapper
  * <p>
  * <b>How to use:</b>
  *

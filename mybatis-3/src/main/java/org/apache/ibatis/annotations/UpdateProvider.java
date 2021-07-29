@@ -19,7 +19,7 @@ import java.lang.annotation.*;
 
 /**
  * The annotation that specify a method that provide an SQL for updating record(s).
- *
+ * 定义更新语句提供方
  * <p>
  * <b>How to use:</b>
  *
