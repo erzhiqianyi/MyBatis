@@ -14,7 +14,6 @@ public class DynamicProxyTest {
     }
 
     @Test
-
     public void TestDynamicProxy() {
         InvocationHandler handler = new InvocationHandler() {
             @Override

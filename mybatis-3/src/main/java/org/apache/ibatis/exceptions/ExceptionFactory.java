@@ -29,6 +29,7 @@ public class ExceptionFactory {
   }
 
   public static RuntimeException wrapException(String message, Exception e) {
+    // 默认使用 PersistenceException 包装异常信息
     return new PersistenceException(ErrorContext.instance().message(message).cause(e).toString(), e);
   }
 

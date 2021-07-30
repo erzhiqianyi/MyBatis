@@ -30,7 +30,7 @@ public final class SystemMetaObject {
   public static final MetaObject NULL_META_OBJECT = MetaObject.forObject(new NullObject(), DEFAULT_OBJECT_FACTORY, DEFAULT_OBJECT_WRAPPER_FACTORY, new DefaultReflectorFactory());
 
   private SystemMetaObject() {
-    // Prevent Instantiation of Static Class
+    // Prevent Instantiation of Static Class, 工具类不能实例化
   }
 
   private static class NullObject {
