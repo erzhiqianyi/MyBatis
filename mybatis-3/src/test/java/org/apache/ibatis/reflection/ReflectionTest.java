@@ -18,7 +18,7 @@ public class ReflectionTest {
 
     @BeforeEach
     public void setUp() {
-        reflectClassPackage = "org.apache.ibatis.reflection.domain.Reflect";
+        reflectClassPackage = "org.apache.ibatis.reflection.domain.ReflectionTestClass";
     }
 
     @Test
@@ -76,7 +76,7 @@ public class ReflectionTest {
         Method[] methods = reflectClass.getMethods();
         Method[] declaredMethods = reflectClass.getDeclaredMethods();
         System.out.println(" public method ");
-        assertEquals(19, methods.length);
+        assertEquals(20, methods.length);
         for (Method method : methods) {
             System.out.println(method);
         }
@@ -93,7 +93,7 @@ public class ReflectionTest {
     public void testGetAnnotation() throws ClassNotFoundException, NoSuchFieldException {
         Class reflectClass = Class.forName(reflectClassPackage);
         Annotation[] annotations = reflectClass.getAnnotations();
-        assertEquals(1, annotations.length);
+        assertEquals(0, annotations.length);
         for (Annotation annotation : annotations) {
             System.out.println(annotation);
         }
