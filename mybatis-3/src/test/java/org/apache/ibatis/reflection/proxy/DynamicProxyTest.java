@@ -15,17 +15,14 @@ public class DynamicProxyTest {
 
     @Test
     public void TestDynamicProxy() {
-        InvocationHandler handler = new InvocationHandler() {
-            @Override
-            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                System.out.println(method);
-                String hello = null;
-                if (method.getName().equals("sayHello")) {
-                    hello = "Hello:" + args[0];
-                    System.out.println(hello);
-                }
-                return hello;
+        InvocationHandler handler = (proxy, method, args) -> {
+            System.out.println(method);
+            String hello = null;
+            if (method.getName().equals("sayHello")) {
+                hello = "Hello:" + args[0];
+                System.out.println(hello);
             }
+            return hello;
         };
         Hello hello = (Hello) Proxy.newProxyInstance(Hello.class.getClassLoader(), new Class[]{Hello.class}, handler);
         String result = "Hello:Tom";

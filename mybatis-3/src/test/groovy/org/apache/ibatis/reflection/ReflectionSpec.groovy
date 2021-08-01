@@ -1,6 +1,6 @@
 package org.apache.ibatis.reflection
 
-import com.sun.corba.se.spi.ior.ObjectKey
+
 import org.apache.ibatis.reflection.domain.ReflectionTestClass
 import spock.lang.*
 
