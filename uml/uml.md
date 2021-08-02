@@ -47,10 +47,11 @@ ScriptingException  <|--    PersistenceException
 @enduml
 ```
 
-### JavaAnnotation
+### MyBatis type
+
 ```puml
 @startuml
-Title "JavaAnnotation类图"
+Title "MyBatis type类图"
 interface Serializable
 class Throwable 
 class Exception 

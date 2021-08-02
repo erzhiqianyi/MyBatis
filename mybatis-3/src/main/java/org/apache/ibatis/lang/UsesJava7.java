@@ -19,6 +19,8 @@ import java.lang.annotation.*;
 
 /**
  * <p>
+ *
+ *     使用Java7 API
  * Indicates that the element uses Java 7 API.
  * </p>
  */

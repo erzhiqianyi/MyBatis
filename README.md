@@ -49,6 +49,7 @@ Myabits source read note and sample
               - [通用功能](#通用功能)
         - [exceptions](#exceptions)
             - [Java中的异常](#Java中的异常)
+        - [lang](#lang)
         - [reflection](#reflection)
             - [装饰器模式](#装饰器模式)
             - [反射](#反射)
@@ -56,6 +57,9 @@ Myabits source read note and sample
                 - [反射基础包](#反射基础包)
                 - [反射常用操作](#反射常用操作)
             - [工厂模式](#工厂模式)
+        - [type](#type)
+            - [模板模式](#模板模式)
+            - [组织划分](#组织划分)
     - [配置解析](#配置解析)
     - [核心操作](#核心操作)
 - [阅读技巧](#阅读技巧)
@@ -916,6 +920,7 @@ jdk8引入,注解可以在同一个地方可以重复使用多次
 ###### 基础功能
 - @Mapper 定义类是Mybatis mapper
 - @Lang 定义语言驱动
+- @Options 自定义用户行为
 ###### 定义SQL语句类型
 - @Select, @SelectProvider 查询语句
 - @Update, @UpdateProvider 更新语句
@@ -926,13 +931,21 @@ jdk8引入,注解可以在同一个地方可以重复使用多次
 - @Param 定义参数名字 
 ###### 处理返回结果
 - @Arg  构造器参数
+- @Case 在类型处理器中定义类型处理方式
 - @ConstructorArgs 构造器
-- @Many  定义一个 sql 语句返回集合
+- @Many   内嵌 SQL 语句返回集合
 - @MapKey 定义map返回的key
+- @One  内嵌 SQL 返回单个结果
+- @Result  数据库字段和对象字段映射
+- @ResultMap 指定 result map
+- @Results 对Result 进行分组
+- @ResultType 指定返回类型
+- @TypeDiscriminator 类型处理器
 ###### 处理缓存
 - @CacheNamespace 缓存命名空间
 - @CacheNamespaceRef 缓存引用
 - @Property 注入缓存属性
+
 #### exceptions
 异常工厂和Mybatis异常父类
 [exceptions代码](mybatis-3/src/main/java/org/apache/ibatis/exceptions)  
@@ -949,7 +962,11 @@ jdk8引入,注解可以在同一个地方可以重复使用多次
         - CheckException 受检查异常，不可预知和避免，需要处理
 
 - [io](mybatis-3/src/main/java/org/apache/ibatis/io)
-- [lang](mybatis-3/src/main/java/org/apache/ibatis/lang)
+- 
+#### lang
+[lang代码](mybatis-3/src/main/java/org/apache/ibatis/lang)
+指定API使用Java版本注解
+
 - [logging](mybatis-3/src/main/java/org/apache/ibatis/logging)
 
 #### reflection
@@ -1140,8 +1157,58 @@ public class Reflector {
 }
 ```
 - [parsing](mybatis-3/src/main/java/org/apache/ibatis/parsing)
-- [type](mybatis-3/src/main/java/org/apache/ibatis/type)
+- 
+#### type
+负责类型处理,处理Java对象和数据库关系之间的映射
 
+[type代码](mybatis-3/src/main/java/org/apache/ibatis/type)
+##### 模板模式
+抽象类定义操作的整体步骤，子类完成每个步骤的具体实现
+
+##### 组织划分
+- 类型处理器
+  - [TypeHandler](mybatis-3/src/main/java/org/apache/ibatis/type/TypeHandler.java)
+    类型处理器接口, 处理输入参数到SQL语句的映射和数据库关系到结果的映射
+    ```java
+    public interface TypeHandler<T> {
+       void setParameter(PreparedStatement ps, int i, T parameter, JdbcType jdbcType) throws SQLException;
+       T getResult(ResultSet rs, String columnName) throws SQLException;
+       T getResult(ResultSet rs, int columnIndex) throws SQLException;
+       T getResult(CallableStatement cs, int columnIndex) throws SQLException;
+    }
+    ```
+  - [BaseTypeHandler](mybatis-3/src/main/java/org/apache/ibatis/type/BaseTypeHandler.java)
+    类型处理器的基本实现  ,使用模板模式，定义模板框架
+    ```java
+        public abstract class BaseTypeHandler<T> extends TypeReference<T> implements TypeHandler<T> {
+              public abstract void setNonNullParameter(PreparedStatement ps, int i, T parameter, JdbcType jdbcType) throws SQLException;
+              public abstract T getNullableResult(ResultSet rs, String columnName) throws SQLException;
+              public abstract T getNullableResult(ResultSet rs, int columnIndex) throws SQLException;
+              public abstract T getNullableResult(CallableStatement cs, int columnIndex) throws SQLException;
+        }
+    ``` 
+  - [TypeReference](mybatis-3/src/main/java/org/apache/ibatis/type/TypeReference.java)
+    类型参考器 ,判断TypeHandler 用来处理的目标类型
+  - [*TypeHandler](mybatis-3/src/main/java/org/apache/ibatis/type)
+    43个类型处理器
+    根据实际类型，从结果集中取出对应类型的数据 ，可读取的数据类参考 ResultSet
+- 类型注册表  
+   注册类型对应的处理器，查类型处理器
+  - [SimpleTypeRegistry](mybatis-3/src/main/java/org/apache/ibatis/type/SimpleTypeRegistry.java)
+    基本类型注册表，基本数据类型集合
+  - [TypeAliasRegistry](mybatis-3/src/main/java/org/apache/ibatis/type/TypeAliasRegistry.java)
+    类型别名注册表，类型的别名和类型的映射关系
+  - [TypeHandlerRegistry](mybatis-3/src/main/java/org/apache/ibatis/type/TypeHandlerRegistry.java)
+    类型注册表，所有类型与对应类型处理器的映射关系,一个Java类型在设计数据库实现时，可以对应多个数据库类型。存在一对多情况
+  - 
+- 注解
+  - Alias
+   给类设置别名
+  - MappedJdbcTypes
+   自定义处理器处理Jdbc类型
+  - MappedTypes
+    自定义类型处理器处理Java类型
+- 工具
 #### 配置解析
 
 - [binding](mybatis-3/src/main/java/org/apache/ibatis/binding)

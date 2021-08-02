@@ -31,6 +31,7 @@ public class TypeAliasRegistry {
   private final Map<String, Class<?>> typeAliases = new HashMap<>();
 
   public TypeAliasRegistry() {
+    //默认类型别名和类型
     registerAlias("string", String.class);
 
     registerAlias("byte", Byte.class);

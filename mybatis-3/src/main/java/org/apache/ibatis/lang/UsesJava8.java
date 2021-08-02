@@ -19,6 +19,7 @@ import java.lang.annotation.*;
 
 /**
  * <p>
+ *     使用Java8 API
  * Indicates that the element uses Java 8 API.
  * </p>
  */

@@ -24,7 +24,7 @@ import java.lang.annotation.Target;
 
 /**
  * The annotation that specify the nested statement for retrieving single object.
- *
+ * 内嵌SQL语句返回单个结果
  * @see Result
  * @see Results
  * @author Clinton Begin

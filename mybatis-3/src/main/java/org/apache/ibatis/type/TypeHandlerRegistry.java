@@ -62,6 +62,7 @@ public final class TypeHandlerRegistry {
    * @since 3.5.4
    */
   public TypeHandlerRegistry(Configuration configuration) {
+    //注册类型处理器
     this.unknownTypeHandler = new UnknownTypeHandler(configuration);
 
     register(Boolean.class, new BooleanTypeHandler());

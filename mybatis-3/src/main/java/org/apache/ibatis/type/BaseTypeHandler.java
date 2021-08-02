@@ -106,10 +106,19 @@ public abstract class BaseTypeHandler<T> extends TypeReference<T> implements Typ
     }
   }
 
+  /**
+   * 抽象方案，由子类实现
+   * @param ps
+   * @param i
+   * @param parameter
+   * @param jdbcType
+   * @throws SQLException
+   */
+
   public abstract void setNonNullParameter(PreparedStatement ps, int i, T parameter, JdbcType jdbcType) throws SQLException;
 
   /**
-   * Gets the nullable result.
+   * Gets the nullable result. 抽象方法，由子类实现
    *
    * @param rs
    *          the rs
@@ -121,8 +130,22 @@ public abstract class BaseTypeHandler<T> extends TypeReference<T> implements Typ
    */
   public abstract T getNullableResult(ResultSet rs, String columnName) throws SQLException;
 
+  /**
+   * 由子类实现具体逻辑
+   * @param rs
+   * @param columnIndex
+   * @return
+   * @throws SQLException
+   */
   public abstract T getNullableResult(ResultSet rs, int columnIndex) throws SQLException;
 
+  /**
+   * 由子类实现具体逻辑
+   * @param cs
+   * @param columnIndex
+   * @return
+   * @throws SQLException
+   */
   public abstract T getNullableResult(CallableStatement cs, int columnIndex) throws SQLException;
 
 }
