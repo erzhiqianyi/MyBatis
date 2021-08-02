@@ -49,4 +49,5 @@ abstract class BaseTypeHandlerTest {
   public abstract void shouldGetResultFromCallableStatement() throws Exception;
 
   public abstract void shouldGetResultNullFromCallableStatement() throws Exception;
+
 }
