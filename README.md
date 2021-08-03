@@ -50,6 +50,8 @@ Myabits source read note and sample
         - [exceptions](#exceptions)
             - [Java中的异常](#Java中的异常)
         - [lang](#lang)
+        - [io](#io)
+          - [单例模式](#单例模式)
         - [reflection](#reflection)
             - [装饰器模式](#装饰器模式)
             - [反射](#反射)
@@ -961,8 +963,16 @@ jdk8引入,注解可以在同一个地方可以重复使用多次
         - RuntimeException 运行时异常,如空指针异常,
         - CheckException 受检查异常，不可预知和避免，需要处理
 
-- [io](mybatis-3/src/main/java/org/apache/ibatis/io)
-- 
+#####  io
+[io代码](mybatis-3/src/main/java/org/apache/ibatis/io)
+负责Mybatis输入和输出，对XML文件和类文件的操作
+##### 单例模式
+保证类的对象唯一
+[单例模式示例]()
+- 枚举实现
+- 懒汉模式
+- 饿汉式 
+- 双重锁
 #### lang
 [lang代码](mybatis-3/src/main/java/org/apache/ibatis/lang)
 指定API使用Java版本注解
