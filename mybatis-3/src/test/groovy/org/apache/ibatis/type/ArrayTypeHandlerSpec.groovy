@@ -1,5 +1,9 @@
 package org.apache.ibatis.type
 
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.RepeatedTest
+import org.junit.jupiter.api.parallel.Execution
+import org.junit.jupiter.api.parallel.ExecutionMode
 import spock.lang.Narrative
 import spock.lang.Subject
 import spock.lang.Title
@@ -169,7 +173,7 @@ class ArrayTypeHandlerSpec extends BaseTypeHandlerSpec {
 
     }
 
-    def "should GetResult Null From CallableStatement"(){
+    def "should GetResult Null From CallableStatement"() {
 
         given: " a mock array "
         Array mockArray = Mock()
@@ -187,7 +191,6 @@ class ArrayTypeHandlerSpec extends BaseTypeHandlerSpec {
         result == null
 
     }
-
 
 
 }

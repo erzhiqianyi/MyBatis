@@ -89,18 +89,18 @@ public class JBoss6VFS extends VFS {
       // Assume valid. It will get flipped later if something goes wrong.
       valid = Boolean.TRUE;
 
-      // Look up and verify required classes
+      // Look up and verify required classes,需要Jboss支持
       VFS.VFS = checkNotNull(getClass("org.jboss.vfs.VFS"));
       VirtualFile.VirtualFile = checkNotNull(getClass("org.jboss.vfs.VirtualFile"));
 
-      // Look up and verify required methods
+      // Look up and verify required methods,需要指定方法
       VFS.getChild = checkNotNull(getMethod(VFS.VFS, "getChild", URL.class));
       VirtualFile.getChildrenRecursively = checkNotNull(getMethod(VirtualFile.VirtualFile,
           "getChildrenRecursively"));
       VirtualFile.getPathNameRelativeTo = checkNotNull(getMethod(VirtualFile.VirtualFile,
           "getPathNameRelativeTo", VirtualFile.VirtualFile));
 
-      // Verify that the API has not changed
+      // Verify that the API has not changed 确保API没有变化
       checkReturnType(VFS.getChild, VirtualFile.VirtualFile);
       checkReturnType(VirtualFile.getChildrenRecursively, List.class);
       checkReturnType(VirtualFile.getPathNameRelativeTo, String.class);

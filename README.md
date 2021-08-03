@@ -52,6 +52,9 @@ Myabits source read note and sample
         - [lang](#lang)
         - [io](#io)
           - [单例模式](#单例模式)
+          - [代理模式](#代理模式)
+          - [文件系统](#文件系统)
+          - [加载资源文件](#加载资源文件)
         - [reflection](#reflection)
             - [装饰器模式](#装饰器模式)
             - [反射](#反射)
@@ -968,11 +971,34 @@ jdk8引入,注解可以在同一个地方可以重复使用多次
 负责Mybatis输入和输出，对XML文件和类文件的操作
 ##### 单例模式
 保证类的对象唯一
-[单例模式示例]()
+[单例模式示例](mybatis-3/src/test/groovy/org/apache/ibatis/io/singleton)
 - 枚举实现
 - 懒汉模式
 - 饿汉式 
 - 双重锁
+##### 代理模式
+建立某一个对象的代理对象，并由代理对象控制元对象的引用
+- 作用
+  - 隔离功能 
+    - 防止外部对目标对象进行直接操作
+    - 在代理商对象中增加功能
+  - 扩展功能
+    - 在代理对象中添加更多扩展功能，如增加日志
+  - 直接替换
+    - 用代理对象替换目对象，由代理商对象实现全部功能
+- 类型
+  - 静态代理
+    - 代理商对象和被代理对象在程序中是确定的，不会在运行时发生变化
+##### 文件系统
+- VFS(Virtual File System)
+  单例模式 只有一个唯一的VFSHolder
+  - JBoss6VFS
+  - DefaultVFS
+##### 加载类资源文件
+  - ClassLoaderWrapper 
+    加载类
+  - Resources
+    读取资源文件
 #### lang
 [lang代码](mybatis-3/src/main/java/org/apache/ibatis/lang)
 指定API使用Java版本注解

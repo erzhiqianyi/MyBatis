@@ -20,7 +20,7 @@ import java.net.URL;
 
 /**
  * A class to wrap access to multiple class loaders making them work as one
- *
+ * 将多个类加载器包装起来，像一个类加载器一样工作
  * @author Clinton Begin
  */
 public class ClassLoaderWrapper {
@@ -30,6 +30,7 @@ public class ClassLoaderWrapper {
 
   ClassLoaderWrapper() {
     try {
+      //系统类加载器
       systemClassLoader = ClassLoader.getSystemClassLoader();
     } catch (SecurityException ignored) {
       // AccessControlException on Google App Engine
@@ -176,7 +177,7 @@ public class ClassLoaderWrapper {
    * @throws ClassNotFoundException - Remember the wisdom of Judge Smails: Well, the world needs ditch diggers, too.
    */
   Class<?> classForName(String name, ClassLoader[] classLoader) throws ClassNotFoundException {
-
+    //迭代类类架子器，知道找到何用的
     for (ClassLoader cl : classLoader) {
 
       if (null != cl) {
@@ -197,13 +198,18 @@ public class ClassLoaderWrapper {
 
   }
 
+  /**
+   * 获取所有类加载器
+   * @param classLoader
+   * @return
+   */
   ClassLoader[] getClassLoaders(ClassLoader classLoader) {
     return new ClassLoader[]{
-        classLoader,
-        defaultClassLoader,
-        Thread.currentThread().getContextClassLoader(),
-        getClass().getClassLoader(),
-        systemClassLoader};
+        classLoader,//传入的类加载器
+        defaultClassLoader,//默认类加载器
+        Thread.currentThread().getContextClassLoader(), //当前线程上下文中的类加载器
+        getClass().getClassLoader(), //当前对象类加载器
+        systemClassLoader}; //系统默认加载器,未设置则为null
   }
 
 }

@@ -51,6 +51,7 @@ public class DefaultVFS extends VFS {
     try {
       List<String> resources = new ArrayList<>();
 
+      //查找jar文件并解析出来
       // First, try to find the URL of a JAR file containing the requested resource. If a JAR
       // file is found, then we'll list child resources by reading the JAR.
       URL jarUrl = findJarForResource(url);
@@ -313,6 +314,8 @@ public class DefaultVFS extends VFS {
   }
 
   /**
+   *
+   * 为什么要判断是不是jarw文件
    * Returns true if the resource located at the given URL is a JAR file.
    *
    * @param url

@@ -45,8 +45,15 @@ public abstract class VFS {
 
   /** Singleton instance holder. */
   private static class VFSHolder {
+    /**
+     * 单例模式
+     */
     static final VFS INSTANCE = createVFS();
 
+    /**
+     * 给出一个VFS实现类
+     * @return
+     */
     @SuppressWarnings("unchecked")
     static VFS createVFS() {
       // Try the user implementations first, then the built-ins
@@ -210,6 +217,7 @@ public abstract class VFS {
   protected abstract List<String> list(URL url, String forPath) throws IOException;
 
   /**
+   * 查找路径下的所有文件
    * Recursively list the full resource path of all the resources that are children of all the
    * resources found at the specified path.
    *

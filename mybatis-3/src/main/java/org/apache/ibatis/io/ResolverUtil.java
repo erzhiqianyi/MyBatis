@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
+ *完成类的筛选
  * <p>ResolverUtil is used to locate classes that are available in the/a class path and meet
  * arbitrary conditions. The two most common conditions are that a class implements/extends
  * another class, or that is it annotated with a specific annotation. However, through the use
@@ -82,6 +83,7 @@ public class ResolverUtil<T> {
   }
 
   /**
+   * 实现某个接口或继承某个类
    * A Test that checks to see if each class is assignable to the provided class. Note
    * that this test will match the parent type itself if it is presented for matching.
    */
@@ -113,6 +115,7 @@ public class ResolverUtil<T> {
   }
 
   /**
+   * 有注解
    * A Test that checks to see if each class is annotated with a specific annotation. If it
    * is, then the test returns true, otherwise false.
    */
