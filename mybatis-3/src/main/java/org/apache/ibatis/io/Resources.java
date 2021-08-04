@@ -233,6 +233,7 @@ public class Resources {
   }
 
   /**
+   * 读取成配置信息
    * Gets a URL as a Properties object
    *
    * @param urlString - the URL to get

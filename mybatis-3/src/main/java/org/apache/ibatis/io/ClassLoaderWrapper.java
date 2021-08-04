@@ -150,6 +150,7 @@ public class ClassLoaderWrapper {
         // ...but some class loaders want this leading "/", so we'll add it
         // and try again if we didn't find the resource
         if (null == url) {
+          //如果没有找到，加上 / 继续找
           url = cl.getResource("/" + resource);
         }
 

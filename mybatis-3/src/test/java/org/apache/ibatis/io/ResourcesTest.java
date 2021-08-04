@@ -174,4 +174,6 @@ class ResourcesTest extends BaseDataTest {
   void stupidJustForCoverage() {
     assertNotNull(new Resources());
   }
+
 }
+
