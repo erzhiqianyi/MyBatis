@@ -26,6 +26,8 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 
 /**
+ *
+ * 打印 connection 日志,代理类
  * Connection proxy to add logging.
  *
  * @author Clinton Begin
@@ -45,21 +47,27 @@ public final class ConnectionLogger extends BaseJdbcLogger implements Invocation
   public Object invoke(Object proxy, Method method, Object[] params)
       throws Throwable {
     try {
+      // 方法来自Object,直接由目标对象运行
       if (Object.class.equals(method.getDeclaringClass())) {
         return method.invoke(this, params);
       }
       if ("prepareStatement".equals(method.getName()) || "prepareCall".equals(method.getName())) {
+        //判断方法名字,是准备语句打印准备信息
         if (isDebugEnabled()) {
           debug(" Preparing: " + removeExtraWhitespace((String) params[0]), true);
         }
+        //返回 PreparedStatement  代理，增加对 PreparedStatement   打印
         PreparedStatement stmt = (PreparedStatement) method.invoke(connection, params);
         stmt = PreparedStatementLogger.newInstance(stmt, statementLog, queryStack);
         return stmt;
       } else if ("createStatement".equals(method.getName())) {
+
+        //返回 Statement  代理，增加对  Statement    打印
         Statement stmt = (Statement) method.invoke(connection, params);
         stmt = StatementLogger.newInstance(stmt, statementLog, queryStack);
         return stmt;
       } else {
+        //其他语句，直接运行
         return method.invoke(connection, params);
       }
     } catch (Throwable t) {

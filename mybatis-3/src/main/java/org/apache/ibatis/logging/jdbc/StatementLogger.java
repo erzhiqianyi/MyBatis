@@ -47,6 +47,7 @@ public final class StatementLogger extends BaseJdbcLogger implements InvocationH
         return method.invoke(this, params);
       }
       if (EXECUTE_METHODS.contains(method.getName())) {
+        //执行方法
         if (isDebugEnabled()) {
           debug(" Executing: " + removeExtraWhitespace((String) params[0]), true);
         }

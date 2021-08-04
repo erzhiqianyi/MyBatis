@@ -49,20 +49,25 @@ Myabits source read note and sample
               - [通用功能](#通用功能)
         - [exceptions](#exceptions)
             - [Java中的异常](#Java中的异常)
-        - [lang](#lang)
         - [io](#io)
           - [单例模式](#单例模式)
           - [代理模式](#代理模式)
           - [文件系统](#文件系统)
           - [加载资源文件](#加载资源文件)
+        - [lang](#lang)
+        - [logging](#logging)
+          - [适配器模式](#适配器模式)
+          - [日志级别和日志框架](#日志级别和日志框架)
+          - [Log](#Log)
+          - [JDBC日志](JDBC日志)
         - [reflection](#reflection)
-            - [装饰器模式](#装饰器模式)
-            - [反射](#反射)
-                - [反射功能](#反射功能)
-                - [反射基础包](#反射基础包)
-                - [反射常用操作](#反射常用操作)
-            - [工厂模式](#工厂模式)
-        - [type](#type)
+          - [装饰器模式](#装饰器模式)
+          - [反射](#反射)
+              - [反射功能](#反射功能)
+              - [反射基础包](#反射基础包)
+              - [反射常用操作](#反射常用操作)
+          - [工厂模式](#工厂模式)
+           - [type](#type)
             - [模板模式](#模板模式)
             - [组织划分](#组织划分)
     - [配置解析](#配置解析)
@@ -999,11 +1004,79 @@ jdk8引入,注解可以在同一个地方可以重复使用多次
     加载类
   - Resources
     读取资源文件
+  - 
 #### lang
 [lang代码](mybatis-3/src/main/java/org/apache/ibatis/lang)
 指定API使用Java版本注解
 
-- [logging](mybatis-3/src/main/java/org/apache/ibatis/logging)
+#### logging 
+完成日志记录
+[logging代码](mybatis-3/src/main/java/org/apache/ibatis/logging)
+
+##### 适配器模式
+在两个或多个不兼容的类之间起到沟通桥梁的作用,适用于无法修改目标类的场景
+[实例代码](mybatis-3/src/test/groovy/org/apache/ibatis/logging/adapter)
+
+##### 日志级别和日志框架
+- 常用日志框架
+  - log4j
+  - Logging
+  - commons-logging
+  - slf4j
+  - logback
+- 日志级别
+  - Fatal 
+    致命等级，导致应用程序退出
+  - Error
+    错误等级，发生了错误，不影响程序运行
+  - Warn
+    警告等级，发生了异常，可能存在潜在错误
+  - Info
+    信息等级，需要强调的应用程序运行信息
+  - Debug
+    调试等级，对调试有帮助的信息
+  - Trace 
+    跟踪等级，程序运行详细过程信息
+  
+##### Log
+- 接口
+  - error(String s, Throwable e); 
+     打印error日志 
+  - error(String s);
+    打印error日志
+  - debug(String s);
+    打印debug日志
+  - trace(String s);
+    打印trace日志
+  - warn(String s);
+    打印warn日志
+  - isDebugEnabled();
+    判断打印debug日志功能是否开启，debug日志适用于开发阶段，在生产中不推荐，通过配置来修改是否打印
+  - isTraceEnabled();
+    判断打印trace日志功能是否开启, trace日志适用于开发阶段， 在生产中不推荐，通过配置来修改是否打印
+- 实现
+  - NoLoggingImpl
+    不做任何日志
+  - StdOutImpl
+    使用 ```System.out.println``` 或 ```System.err.println``` 打印
+  - 装饰器实现
+    - Slf4jLocationAwareLoggerImpl
+    - Slf4jLoggerImpl
+    - Log4j2AbstractLoggerImpl
+    - Log4j2LoggerImpl
+  - 适配器模式
+    - JakartaCommonsLoggingImpl
+    - Jdk14LoggingImpl
+    - Log4jImpl
+    - Log4j2Impl
+    - Slf4jImpl
+     
+##### JDBC日志
+使用代理模式，将JDBC操作日志打印出来
+- BaseJdbcLogger
+基本功能
+- 
+##### 日志配置
 
 #### reflection
 
@@ -1107,7 +1180,7 @@ jdk8引入,注解可以在同一个地方可以重复使用多次
 通过 ```Roroxy.newInstance()``` 创建接口对象
 
 利用反射实现动态代理
-
+[实例代码](mybatis-3/src/test/java/org/apache/ibatis/reflection/proxy/DynamicProxyTest.java)
 #### 工厂模式
 ObjectFactory
 ```java

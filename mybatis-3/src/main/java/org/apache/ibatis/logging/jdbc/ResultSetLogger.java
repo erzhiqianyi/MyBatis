@@ -74,9 +74,11 @@ public final class ResultSetLogger extends BaseJdbcLogger implements InvocationH
             ResultSetMetaData rsmd = rs.getMetaData();
             final int columnCount = rsmd.getColumnCount();
             if (first) {
+              //第一条，打印表头
               first = false;
               printColumnHeaders(rsmd, columnCount);
             }
+            //打印数据
             printColumnValues(columnCount);
           }
         } else {
@@ -102,6 +104,7 @@ public final class ResultSetLogger extends BaseJdbcLogger implements InvocationH
   }
 
   private void printColumnValues(int columnCount) {
+
     StringJoiner row = new StringJoiner(", ", "       Row: ", "");
     for (int i = 1; i <= columnCount; i++) {
       try {
@@ -115,6 +118,7 @@ public final class ResultSetLogger extends BaseJdbcLogger implements InvocationH
         row.add("<<Cannot Display>>");
       }
     }
+    // 打印trace日志
     trace(row.toString(), false);
   }
 
