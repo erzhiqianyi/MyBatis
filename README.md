@@ -67,10 +67,12 @@ Myabits source read note and sample
               - [反射基础包](#反射基础包)
               - [反射常用操作](#反射常用操作)
           - [工厂模式](#工厂模式)
-           - [type](#type)
-            - [模板模式](#模板模式)
-            - [组织划分](#组织划分)
+          - [type](#type)
+          - [模板模式](#模板模式)
+          - [组织划分](#组织划分)
+        - [parsing](#parsing)
     - [配置解析](#配置解析)
+      - []
     - [核心操作](#核心操作)
 - [阅读技巧](#阅读技巧)
 - [设计思想](#设计思想)
@@ -1265,8 +1267,15 @@ public class Reflector {
     private Map<String, String> caseInsensitivePropertyMap = new HashMap<>();
 }
 ```
-- [parsing](mybatis-3/src/main/java/org/apache/ibatis/parsing)
-- 
+####  parsing
+解析包
+##### XNode
+封装 ```org.w3c.dom.Node```
+
+##### XPathParser
+封装 ```javax.xml.xpath.XPath```
+
+ [parsing代码](mybatis-3/src/main/java/org/apache/ibatis/parsing)
 #### type
 负责类型处理,处理Java对象和数据库关系之间的映射
 

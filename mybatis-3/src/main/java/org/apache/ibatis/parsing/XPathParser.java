@@ -41,10 +41,20 @@ import java.util.Properties;
  */
 public class XPathParser {
 
+
+  //需要解析的这个XML文档
   private final Document document;
+
+  //是否开启验证
   private boolean validation;
+
+  //寻找DTD文件方法
   private EntityResolver entityResolver;
+
+  //MyBatis 配置文件中properties 节点的信息
   private Properties variables;
+
+  //XPath工具
   private XPath xpath;
 
   public XPathParser(String xml) {

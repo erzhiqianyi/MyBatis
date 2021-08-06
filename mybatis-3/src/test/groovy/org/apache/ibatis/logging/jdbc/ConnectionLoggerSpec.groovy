@@ -7,7 +7,7 @@ import java.sql.Connection
 
 @Title("测试 ConnectionLogger")
 @Narrative(""" 用Spock 重写  ConnectionLoggerTest """)
-@Subject(BaseJdbcLogger)
+@Subject(ConnectionLogger)
 @Unroll
 class ConnectionLoggerSpec extends Specification {
     def "should Print Prepare Statement"() {

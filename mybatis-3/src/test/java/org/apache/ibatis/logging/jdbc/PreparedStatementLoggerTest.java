@@ -64,6 +64,7 @@ class PreparedStatementLoggerTest {
     verify(log).debug(contains("Parameters: 10(Integer)"));
     Assertions.assertNotNull(rs);
     Assertions.assertNotSame(resultSet, rs);
+
   }
 
   @Test

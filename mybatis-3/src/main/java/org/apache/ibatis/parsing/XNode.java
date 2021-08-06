@@ -30,10 +30,18 @@ import java.util.function.Supplier;
 public class XNode {
 
   private final Node node;
+  //节点名
   private final String name;
+  //节点体
   private final String body;
+
+  //节点的属性
   private final Properties attributes;
+
+  //MyBatis 配置文件中properties 节点的信息
   private final Properties variables;
+
+  // XML解析器
   private final XPathParser xpathParser;
 
   public XNode(XPathParser xpathParser, Node node, Properties variables) {
