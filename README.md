@@ -72,7 +72,7 @@ Myabits source read note and sample
           - [组织划分](#组织划分)
         - [parsing](#parsing)
     - [配置解析](#配置解析)
-      - []
+      - [binding](#binding)
     - [核心操作](#核心操作)
 - [阅读技巧](#阅读技巧)
 - [设计思想](#设计思想)
@@ -1328,8 +1328,19 @@ public class Reflector {
     自定义类型处理器处理Java类型
 - 工具
 #### 配置解析
+##### binding
+[binding代码](mybatis-3/src/main/java/org/apache/ibatis/binding)
+处理Java方法与SQL语句之间绑定关系
+###### 为映射接口中的抽象方法接入对应的数据库操作
+- 数据库操作方法化
+通过 ```execute``` 触发SQL操作
+  - 数据库操作方法接入
+通过```MapperProxy``` 动态代理,将映射接口的方法调用转接成对 ```MapperMethod```的execute方法调用,实现数据库操作
+###### 维护映射接口抽象方法与数据库操作节点之间的关联关系
+- 将映射接口和MapperProxyFactory  关联
+  MapperRegistry绑定类型和 MapperProxyFactory 。
+- 通过MapperProxy找到合适的MapperMethod 对象，执行 ```execute```
 
-- [binding](mybatis-3/src/main/java/org/apache/ibatis/binding)
 - [builder](mybatis-3/src/main/java/org/apache/ibatis/builder)
 - [mapping](mybatis-3/src/main/java/org/apache/ibatis/mapping)
 - [scripting](mybatis-3/src/main/java/org/apache/ibatis/scripting)

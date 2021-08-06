@@ -56,33 +56,44 @@ public class MapperMethod {
 
   public Object execute(SqlSession sqlSession, Object[] args) {
     Object result;
+    //根据方法类型，执行相应操作
     switch (command.getType()) {
       case INSERT: {
+        //插入操作
         Object param = method.convertArgsToSqlCommandParam(args);
+        //SQL语句执行成功后，返回的是被操作的行的行数
         result = rowCountResult(sqlSession.insert(command.getName(), param));
         break;
       }
       case UPDATE: {
+        //更新操作
         Object param = method.convertArgsToSqlCommandParam(args);
         result = rowCountResult(sqlSession.update(command.getName(), param));
         break;
       }
       case DELETE: {
+        //删除操作
         Object param = method.convertArgsToSqlCommandParam(args);
         result = rowCountResult(sqlSession.delete(command.getName(), param));
         break;
       }
       case SELECT:
+        //查询操作
         if (method.returnsVoid() && method.hasResultHandler()) {
+          //不需要返回结果
           executeWithResultHandler(sqlSession, args);
           result = null;
         } else if (method.returnsMany()) {
+          //返回多条数据
           result = executeForMany(sqlSession, args);
         } else if (method.returnsMap()) {
+          //返回map数据
           result = executeForMap(sqlSession, args);
         } else if (method.returnsCursor()) {
+          //返回游标
           result = executeForCursor(sqlSession, args);
         } else {
+          //默认查询一个结果
           Object param = method.convertArgsToSqlCommandParam(args);
           result = sqlSession.selectOne(command.getName(), param);
           if (method.returnsOptional()
@@ -92,6 +103,7 @@ public class MapperMethod {
         }
         break;
       case FLUSH:
+        //Flush 操作
         result = sqlSession.flushStatements();
         break;
       default:
@@ -105,6 +117,7 @@ public class MapperMethod {
   }
 
   private Object rowCountResult(int rowCount) {
+    //判断操作结果,更新语句操作类型，
     final Object result;
     if (method.returnsVoid()) {
       result = null;
@@ -251,18 +264,32 @@ public class MapperMethod {
       return type;
     }
 
+    /**
+     * 递归查找
+     * @param mapperInterface
+     * @param methodName
+     * @param declaringClass
+     * @param configuration
+     * @return
+     */
     private MappedStatement resolveMappedStatement(Class<?> mapperInterface, String methodName,
         Class<?> declaringClass, Configuration configuration) {
+      //查找对应的MappedStatement  ,在初始化时，已经将配置解析到 Configuration  中。
+      //SQL语句操作编号: 接口名.方法名
       String statementId = mapperInterface.getName() + "." + methodName;
+
       if (configuration.hasStatement(statementId)) {
+        //配置中存在对应的语句,直接返回
         return configuration.getMappedStatement(statementId);
       } else if (mapperInterface.equals(declaringClass)) {
+        //递归终点，没有找到，之间返回
         return null;
       }
+
       for (Class<?> superInterface : mapperInterface.getInterfaces()) {
         if (declaringClass.isAssignableFrom(superInterface)) {
-          MappedStatement ms = resolveMappedStatement(superInterface, methodName,
-              declaringClass, configuration);
+          //递归查找
+          MappedStatement ms = resolveMappedStatement(superInterface, methodName, declaringClass, configuration);
           if (ms != null) {
             return ms;
           }
@@ -274,11 +301,17 @@ public class MapperMethod {
 
   public static class MethodSignature {
 
+    //是否返回集合类型
     private final boolean returnsMany;
+    //是否返回为map
     private final boolean returnsMap;
+    //是否返回Void
     private final boolean returnsVoid;
+
     private final boolean returnsCursor;
+
     private final boolean returnsOptional;
+
     private final Class<?> returnType;
     private final String mapKey;
     private final Integer resultHandlerIndex;
@@ -286,6 +319,7 @@ public class MapperMethod {
     private final ParamNameResolver paramNameResolver;
 
     public MethodSignature(Configuration configuration, Class<?> mapperInterface, Method method) {
+      //处理返回结果
       Type resolvedReturnType = TypeParameterResolver.resolveReturnType(method, mapperInterface);
       if (resolvedReturnType instanceof Class<?>) {
         this.returnType = (Class<?>) resolvedReturnType;
@@ -377,6 +411,7 @@ public class MapperMethod {
     private String getMapKey(Method method) {
       String mapKey = null;
       if (Map.class.isAssignableFrom(method.getReturnType())) {
+        //从注解中读取MapKey
         final MapKey mapKeyAnnotation = method.getAnnotation(MapKey.class);
         if (mapKeyAnnotation != null) {
           mapKey = mapKeyAnnotation.value();

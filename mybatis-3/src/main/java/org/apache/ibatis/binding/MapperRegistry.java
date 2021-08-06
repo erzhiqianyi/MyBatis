@@ -23,19 +23,29 @@ import org.apache.ibatis.session.SqlSession;
 import java.util.*;
 
 /**
+ * Mapper 注册器
  * @author Clinton Begin
  * @author Eduardo Macarron
  * @author Lasse Voss
  */
 public class MapperRegistry {
 
+  //数据库配置
   private final Configuration config;
+  //已经发现的Mapper
   private final Map<Class<?>, MapperProxyFactory<?>> knownMappers = new HashMap<>();
 
   public MapperRegistry(Configuration config) {
     this.config = config;
   }
 
+  /**
+   * 查找 mapper
+   * @param type
+   * @param sqlSession
+   * @param <T>
+   * @return
+   */
   @SuppressWarnings("unchecked")
   public <T> T getMapper(Class<T> type, SqlSession sqlSession) {
     final MapperProxyFactory<T> mapperProxyFactory = (MapperProxyFactory<T>) knownMappers.get(type);
@@ -43,6 +53,7 @@ public class MapperRegistry {
       throw new BindingException("Type " + type + " is not known to the MapperRegistry.");
     }
     try {
+      // 生成动态代理对象
       return mapperProxyFactory.newInstance(sqlSession);
     } catch (Exception e) {
       throw new BindingException("Error getting mapper instance. Cause: " + e, e);
@@ -76,6 +87,7 @@ public class MapperRegistry {
   }
 
   /**
+   *
    * Gets the mappers.
    *
    * @return the mappers
@@ -86,6 +98,7 @@ public class MapperRegistry {
   }
 
   /**
+   *   添加指定包内的Mapper
    * Adds the mappers.
    *
    * @param packageName
@@ -96,6 +109,7 @@ public class MapperRegistry {
    */
   public void addMappers(String packageName, Class<?> superType) {
     ResolverUtil<Class<?>> resolverUtil = new ResolverUtil<>();
+    // 筛选包下面的类
     resolverUtil.find(new ResolverUtil.IsA(superType), packageName);
     Set<Class<? extends Class<?>>> mapperSet = resolverUtil.getClasses();
     for (Class<?> mapperClass : mapperSet) {
@@ -111,6 +125,7 @@ public class MapperRegistry {
    * @since 3.2.2
    */
   public void addMappers(String packageName) {
+    //默认添加所有类型
     addMappers(packageName, Object.class);
   }
 

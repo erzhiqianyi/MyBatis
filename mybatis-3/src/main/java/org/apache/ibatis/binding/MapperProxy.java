@@ -31,6 +31,7 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 /**
+ * 使用动态代理 , 执行  MapperMethod.execute()
  * @author Clinton Begin
  * @author Eduardo Macarron
  */
@@ -81,8 +82,10 @@ public class MapperProxy<T> implements InvocationHandler, Serializable {
   public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
     try {
       if (Object.class.equals(method.getDeclaringClass())) {
+        //泪痣Object的方法，直接调用
         return method.invoke(this, args);
       } else {
+        //找到执行器， 利用执行器执行方法
         return cachedInvoker(method).invoke(proxy, method, args, sqlSession);
       }
     } catch (Throwable t) {
@@ -142,6 +145,7 @@ public class MapperProxy<T> implements InvocationHandler, Serializable {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args, SqlSession sqlSession) throws Throwable {
+      //通过  MapperMethod  进行调用
       return mapperMethod.execute(sqlSession, args);
     }
   }
@@ -156,6 +160,7 @@ public class MapperProxy<T> implements InvocationHandler, Serializable {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args, SqlSession sqlSession) throws Throwable {
+
       return methodHandle.bindTo(proxy).invokeWithArguments(args);
     }
   }
