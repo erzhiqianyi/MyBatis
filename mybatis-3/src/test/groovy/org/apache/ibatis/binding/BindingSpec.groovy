@@ -1,6 +1,7 @@
 package org.apache.ibatis.binding
 
-import javassist.util.proxy.Proxy
+
+import net.sf.cglib.proxy.Factory
 import org.apache.ibatis.BaseDataTest
 import org.apache.ibatis.cursor.Cursor
 import org.apache.ibatis.domain.blog.*
@@ -16,15 +17,16 @@ import spock.lang.*
 import javax.sql.DataSource
 import java.lang.reflect.Method
 
-@Title("测试  参数绑定")
+@Title("测试  绑定参数绑定，结果绑定")
 @Narrative(""" 使用spock 重写  BindingTest   """)
 @Subject()
 @Unroll
 class BindingSpec extends Specification {
 
+    @Shared
     private SqlSessionFactory sqlSessionFactory
 
-    def setup() {
+    def setupSpec() {
         DataSource dataSource = BaseDataTest.createBlogDataSource();
         BaseDataTest.runScript(dataSource, BaseDataTest.BLOG_DDL);
         BaseDataTest.runScript(dataSource, BaseDataTest.BLOG_DATA);
@@ -114,6 +116,9 @@ class BindingSpec extends Specification {
         when: "insert author "
         int rows = mapper.insertAuthor(author);
 
+        and: " rollback "
+        session.rollback();
+
         then: " rows should be one"
         rows == 1
 
@@ -193,11 +198,6 @@ class BindingSpec extends Specification {
     }
 
     def "should Select Random"() {
-
-    }
-
-    @Test
-    void shouldSelectRandom() {
         given: " SqlSession  from SqlSessionFactory  "
         SqlSession session = sqlSessionFactory.openSession()
 
@@ -209,9 +209,7 @@ class BindingSpec extends Specification {
 
         then: " random should not be null "
         null != x
-
     }
-
 
     def "should Execute Bound SelectList Of Blogs Statement"() {
         given: " SqlSession  from SqlSessionFactory  "
@@ -525,8 +523,7 @@ class BindingSpec extends Specification {
     }
 
 
-    @Test
-    void shouldSelectDraftTypedPosts() {
+    def "should Select Draft Typed Posts"() {
         given: " SqlSession  from SqlSessionFactory  "
         SqlSession session = sqlSessionFactory.openSession()
 
@@ -539,10 +536,10 @@ class BindingSpec extends Specification {
         then: " post should be "
         posts.size() == 5
         posts[0] instanceof DraftPost
-        posts[1] instanceof DraftPost
+        !(posts[1] instanceof DraftPost)
         posts[2] instanceof DraftPost
-        posts[3] instanceof DraftPost
-        posts[4] instanceof DraftPost
+        !(posts[3] instanceof DraftPost)
+        !(posts[4] instanceof DraftPost)
     }
 
 
@@ -559,10 +556,10 @@ class BindingSpec extends Specification {
         then: "post should be "
         posts.size() == 5
         posts[0] instanceof DraftPost
-        posts[1] instanceof DraftPost
+        !(posts[1] instanceof DraftPost)
         posts[2] instanceof DraftPost
-        posts[3] instanceof DraftPost
-        posts[4] instanceof DraftPost
+        !(posts[3] instanceof DraftPost)
+        !(posts[4] instanceof DraftPost)
 
     }
 
@@ -643,11 +640,10 @@ class BindingSpec extends Specification {
         BoundBlogMapper mapper = session.getMapper(BoundBlogMapper.class)
 
         when: "selectBlogByNonExistentNestedParam "
-        mapper.selectBlogByNonExistentNestedParam(1, Collections.<String, Object> emptyMap());
+        Blog blog = mapper.selectBlogByNonExistentNestedParam(1, Collections.<String, Object> emptyMap());
 
-
-        then: " should thrown exception"
-        thrown(Exception.class)
+        then: "blog should be null"
+        null == blog
     }
 
 
@@ -704,7 +700,7 @@ class BindingSpec extends Specification {
         final MapperProxyFactory<BoundBlogMapper> mapperProxyFactory = new MapperProxyFactory<BoundBlogMapper>(BoundBlogMapper.class);
 
         then: "mapperProxyFactory.getMapperInterface() should be   "
-        mapperProxyFactory.getMapperInterface() == BoundAuthorMapper.class
+        mapperProxyFactory.getMapperInterface() == BoundBlogMapper.class
 
         when: " create instance from mapperProxyFactory "
         BoundBlogMapper mapper = mapperProxyFactory.newInstance(session)
@@ -758,19 +754,19 @@ class BindingSpec extends Specification {
 
         then: " blogs should be"
         blogs.size() == 2
-        blogs[0] instanceof Proxy
+        !(blogs[0] instanceof Factory)
         blogs[0].getAuthor().getId() == 101
         blogs[0].getPosts().size() == 1
-        blogs[0].getPosts().get(0) == 1
-        blogs[1] instanceof Proxy
+        blogs[0].getPosts().get(0).getId() == 1
+        !(blogs[1] instanceof Factory)
         blogs[1].getAuthor().getId() == 102
         blogs[1].getPosts().size() == 1
-        blogs[1].getPosts().get(0) == 2
+        blogs[1].getPosts().get(0).getId() == 2
 
     }
 
 
-    def "should Get Blogs With Authors And Post sEagerly"() {
+    def "should Get Blogs With Authors And Posts Eagerly"() {
         given: " SqlSession  from SqlSessionFactory  "
         SqlSession session = sqlSessionFactory.openSession()
 
@@ -782,14 +778,14 @@ class BindingSpec extends Specification {
 
         then: " blogs should be"
         blogs.size() == 2
-        blogs[0] instanceof Proxy
+        !(blogs[0] instanceof Factory)
         blogs[0].getAuthor().getId() == 101
         blogs[0].getPosts().size() == 1
-        blogs[0].getPosts().get(0) == 1
-        blogs[1] instanceof Proxy
+        blogs[0].getPosts().get(0).getId() == 1
+        !(blogs[1] instanceof Factory)
         blogs[1].getAuthor().getId() == 102
         blogs[1].getPosts().size() == 1
-        blogs[1].getPosts().get(0) == 2
+        blogs[1].getPosts().get(0).getId() == 2
     }
 
 
@@ -815,7 +811,7 @@ class BindingSpec extends Specification {
     }
 
 
-    def "executeWithMapKeyAndRowBounds"() {
+    def "execute With MapKey And RowBounds"() {
         given: " SqlSession  from SqlSessionFactory  "
         SqlSession session = sqlSessionFactory.openSession()
 
@@ -827,7 +823,7 @@ class BindingSpec extends Specification {
         Blog blog = blogs.get(2);
 
         then: " blogs should be "
-        blogs.size() == 2
+        blogs.size() == 1
         blog.getId() == 2
     }
 
@@ -846,7 +842,7 @@ class BindingSpec extends Specification {
 
         then: " blog should be "
         blog.getId() == 2
-        blogIterator.hasNext()
+        !blogIterator.hasNext()
     }
 
 
@@ -876,6 +872,9 @@ class BindingSpec extends Specification {
         and: "  selectAuthorMapToPropertiesUsingRepeatable "
         Author author2 = mapper.selectAuthorMapToPropertiesUsingRepeatable(author.getId());
 
+        and: "rollback "
+        session.rollback()
+
         then: " author2 should same as author "
         null != author2
         author.getId() == author2.getId()
@@ -902,8 +901,12 @@ class BindingSpec extends Specification {
         and: "selectAuthorMapToConstructorUsingRepeatable "
         Author author2 = mapper.selectAuthorMapToConstructorUsingRepeatable(author.getId());
 
+        and: "rollback"
+        session.rollback()
+
         then: " author2 should same as author "
         null != author2
+
         author.getId() == author2.getId()
         author.getUsername() == author2.getUsername()
         author.getPassword() == author2.getPassword()
@@ -928,13 +931,16 @@ class BindingSpec extends Specification {
         and: "selectAuthorUsingSingleRepeatable"
         Author author2 = mapper.selectAuthorUsingSingleRepeatable(author.getId());
 
+        and: " rollback"
+        session.rollback()
+
         then: " author2 should same as author "
         null != author2
         author.getId() == author2.getId()
         author.getUsername() == author2.getUsername()
-        author.getPassword() == author2.getPassword()
-        author.getBio() == author2.getBio()
-        author.getEmail() == author2.getEmail()
+        null == author2.getPassword()
+        null == author2.getBio()
+        null == author2.getEmail()
     }
 
     def shouldMapWhenSpecifyBothArgAndConstructorArgs() {
@@ -952,6 +958,9 @@ class BindingSpec extends Specification {
 
         and: "selectAuthorUsingBothArgAndConstructorArgs"
         Author author2 = mapper.selectAuthorUsingBothArgAndConstructorArgs(author.getId());
+
+        and: " rollback"
+        session.rollback()
 
         then: " author2 should same as author "
         null != author2
@@ -978,6 +987,9 @@ class BindingSpec extends Specification {
 
         and: "selectAuthorUsingBothResultAndResults"
         Author author2 = mapper.selectAuthorUsingBothResultAndResults(author.getId());
+
+        and: "rollback"
+        session.rollback()
 
         then: " author2 should same as author "
         null != author2
