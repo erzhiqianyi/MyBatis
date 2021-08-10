@@ -30,6 +30,7 @@ import org.apache.ibatis.type.TypeHandler;
 import java.util.*;
 
 /**
+ * 辅助解析命名空间,缓存共享，结果映射等
  * @author Clinton Begin
  */
 public class MapperBuilderAssistant extends BaseBuilder {

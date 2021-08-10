@@ -29,6 +29,10 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
+ * 基础工具
+ * - 类型转化 如*ValueOf
+ * - 创建实例  createInstance
+ * - 别名类型处理器 resolveTypeHandler
  * @author Clinton Begin
  */
 public abstract class BaseBuilder {

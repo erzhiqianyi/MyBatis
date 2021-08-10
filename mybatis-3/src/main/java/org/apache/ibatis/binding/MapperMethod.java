@@ -39,6 +39,7 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
+ * 负责sql语句和接口方法的绑定,将参数转换成SQL参数,通过RowBounds 处理逻辑分页
  * @author Clinton Begin
  * @author Eduardo Macarron
  * @author Lasse Voss

@@ -67,12 +67,19 @@ Myabits source read note and sample
               - [反射基础包](#反射基础包)
               - [反射常用操作](#反射常用操作)
           - [工厂模式](#工厂模式)
-          - [type](#type)
+        - [type](#type)
           - [模板模式](#模板模式)
           - [组织划分](#组织划分)
         - [parsing](#parsing)
+          - [XNode](#XNode)
+          - [XPathParser](#XPathParser)
     - [配置解析](#配置解析)
       - [binding](#binding)
+        - [绑定流程](#绑定流程)
+      - [builder](#builder)
+        - [建造者模式](#建造者模式)
+        - [解析XML配置文件和映射文件](#解析XML配置文件和映射文件)
+        - [解析注解Mapper](#解析注解Mapper)
     - [核心操作](#核心操作)
 - [阅读技巧](#阅读技巧)
 - [设计思想](#设计思想)
@@ -1330,6 +1337,8 @@ public class Reflector {
 #### 配置解析
 ##### binding
 [binding代码](mybatis-3/src/main/java/org/apache/ibatis/binding)
+
+##### 绑定流程
 处理Java方法与SQL语句之间绑定关系
 ###### 为映射接口中的抽象方法接入对应的数据库操作
 - 数据库操作方法化
@@ -1341,7 +1350,13 @@ public class Reflector {
   MapperRegistry绑定类型和 MapperProxyFactory 。
 - 通过MapperProxy找到合适的MapperMethod 对象，执行 ```execute```
 
-- [builder](mybatis-3/src/main/java/org/apache/ibatis/builder)
+##### builder
+[builder代码](mybatis-3/src/main/java/org/apache/ibatis/builder)
+###### 建造者模式
+对象属性较多时，使用 builder 来构建对象
+[示例代码](mybatis-3/src/test/groovy/org/apache/ibatis/builder)
+###### 解析XML配置文件和映射文件
+###### 解析注解Mapper
 - [mapping](mybatis-3/src/main/java/org/apache/ibatis/mapping)
 - [scripting](mybatis-3/src/main/java/org/apache/ibatis/scripting)
 - [datasource](mybatis-3/src/main/java/org/apache/ibatis/datasource)

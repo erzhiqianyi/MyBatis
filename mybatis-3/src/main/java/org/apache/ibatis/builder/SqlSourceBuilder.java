@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 /**
+ * 将 DynamicSqlSource 和 RawSqlSource中的“＃{}”符号替换掉，从而将它们转化为 StaticSqlSource
  * @author Clinton Begin
  */
 public class SqlSourceBuilder extends BaseBuilder {
@@ -40,13 +41,23 @@ public class SqlSourceBuilder extends BaseBuilder {
     super(configuration);
   }
 
+  /**
+   *
+   * 将 DynamicSqlSource 和 RawSqlSource中的“＃{}”符号替换掉，从而将它们转化为 StaticSqlSource
+   * @param originalSql  不含xml标签和${}的sql语句
+   * @param parameterType 实际参数类型
+   * @param additionalParameters 附加参数
+   * @return 解析后的 StaticSqlSource,语句中只包含 ？
+   */
   public SqlSource parse(String originalSql, Class<?> parameterType, Map<String, Object> additionalParameters) {
     ParameterMappingTokenHandler handler = new ParameterMappingTokenHandler(configuration, parameterType, additionalParameters);
+
     GenericTokenParser parser = new GenericTokenParser("#{", "}", handler);
     String sql;
     if (configuration.isShrinkWhitespacesInSql()) {
       sql = parser.parse(removeExtraWhitespaces(originalSql));
     } else {
+      //利用解析解析占位符号
       sql = parser.parse(originalSql);
     }
     return new StaticSqlSource(configuration, sql, handler.getParameterMappings());
