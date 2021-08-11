@@ -152,6 +152,7 @@ class XmlConfigBuilderTest {
         + "  </typeHandlers>\n"
         + "</configuration>\n";
 
+    System.out.println(MAPPER_CONFIG);
     XMLConfigBuilder builder = new XMLConfigBuilder(new StringReader(MAPPER_CONFIG));
     builder.parse();
 
@@ -269,6 +270,7 @@ class XmlConfigBuilderTest {
             + "    <setting name=\"foo\" value=\"bar\"/>\n"
             + "  </settings>\n"
             + "</configuration>\n";
+    System.out.println(MAPPER_CONFIG);
 
     XMLConfigBuilder builder = new XMLConfigBuilder(new StringReader(MAPPER_CONFIG));
     when(builder::parse);
@@ -285,7 +287,7 @@ class XmlConfigBuilderTest {
             + "    <typeAlias type=\"a.b.c.Foo\"/>\n"
             + "  </typeAliases>\n"
             + "</configuration>\n";
-
+    System.out.println(MAPPER_CONFIG);
     XMLConfigBuilder builder = new XMLConfigBuilder(new StringReader(MAPPER_CONFIG));
     when(builder::parse);
     then(caughtException()).isInstanceOf(BuilderException.class)
@@ -300,6 +302,7 @@ class XmlConfigBuilderTest {
             + "  <properties resource=\"a/b/c/foo.properties\" url=\"file:./a/b/c/jdbc.properties\"/>\n"
             + "</configuration>\n";
 
+    System.out.println(MAPPER_CONFIG);
     XMLConfigBuilder builder = new XMLConfigBuilder(new StringReader(MAPPER_CONFIG));
     when(builder::parse);
     then(caughtException()).isInstanceOf(BuilderException.class)

@@ -98,7 +98,6 @@ class XmlConfigBuilderSpec extends Specification {
             constants = javaType.getEnumConstants();
         }
 
-        @Override
         void setNonNullParameter(PreparedStatement ps, int i, E parameter, JdbcType jdbcType) throws SQLException {
             ps.setInt(i, parameter.ordinal() + 1); // 0 means NULL so add +1
         }
@@ -125,27 +124,204 @@ class XmlConfigBuilderSpec extends Specification {
 
     def "register Java Type Initializing Type Handler"() {
         given: "xml config "
-        final String MAPPER_CONFIG = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n"
-        +"<!DOCTYPE configuration PUBLIC \"-//mybatis.org//DTD Config 3.0//EN\" \"http://mybatis.org/dtd/mybatis-3-config.dtd\">\n"
-        +"<configuration>\n"
-        +"  <typeHandlers>\n"
-        +"    <typeHandler javaType=\"org.apache.ibatis.builder.XmlConfigBuilderTest$MyEnum\"\n"
-        +"      handler=\"org.apache.ibatis.builder.XmlConfigBuilderTest$EnumOrderTypeHandler\"/>\n"
-        +"  </typeHandlers>\n"
-        +"</configuration>\n"
+        String MAPPER_CONFIG = '<?xml version="1.0" encoding="UTF-8" ?>\n' +
+                '<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">\n' +
+                '<configuration>\n' +
+                '  <typeHandlers>\n' +
+                '    <typeHandler javaType="org.apache.ibatis.builder.XmlConfigBuilderSpec$MyEnum"\n' +
+                '      handler="org.apache.ibatis.builder.XmlConfigBuilderSpec$EnumOrderTypeHandler"/>\n' +
+                '  </typeHandlers>\n' +
+                '</configuration>'
 
         when: "build config  "
         XMLConfigBuilder builder = new XMLConfigBuilder(new StringReader(MAPPER_CONFIG));
         builder.parse();
 
-        and:" get TypeHandlerRegistry "
-        then: " "
-
+        and: " get TypeHandlerRegistry "
         TypeHandlerRegistry typeHandlerRegistry = builder.getConfiguration().getTypeHandlerRegistry();
-        TypeHandler<XmlConfigBuilderTest.MyEnum> typeHandler = typeHandlerRegistry.getTypeHandler(XmlConfigBuilderTest.MyEnum.class);
+        TypeHandler<MyEnum> typeHandler = typeHandlerRegistry.getTypeHandler(MyEnum.class);
 
-        assertTrue(typeHandler instanceof XmlConfigBuilderTest.EnumOrderTypeHandler);
-        assertArrayEquals(XmlConfigBuilderTest.MyEnum.values(), ((XmlConfigBuilderTest.EnumOrderTypeHandler<XmlConfigBuilderTest.MyEnum>) typeHandler).constants);
+        then: " handler should be "
+        typeHandler instanceof EnumOrderTypeHandler
+    }
+
+
+    def "should Success fully Load XML Config File"() {
+        given: " resource"
+        String resource = "org/apache/ibatis/builder/CustomizedSettingsMapperConfig.xml";
+
+        when: " read resource  as stream "
+        InputStream inputStream = Resources.getResourceAsStream(resource)
+
+        and: " create builder from stream"
+        XMLConfigBuilder builder = new XMLConfigBuilder(inputStream);
+
+        and: "build configuration"
+        Configuration config = builder.parse();
+
+        then: "config should be "
+        config.getAutoMappingBehavior() == AutoMappingBehavior.NONE
+        config.getAutoMappingUnknownColumnBehavior() == AutoMappingUnknownColumnBehavior.WARNING
+        !config.isCacheEnabled()
+        config.getProxyFactory() instanceof CglibProxyFactory
+        config.isLazyLoadingEnabled()
+        config.isAggressiveLazyLoading()
+        !config.isMultipleResultSetsEnabled()
+        !config.isUseColumnLabel()
+        config.isUseGeneratedKeys()
+        config.getDefaultExecutorType() == ExecutorType.BATCH
+        config.getDefaultStatementTimeout() == 10
+        config.getDefaultFetchSize() == 100
+        config.getDefaultResultSetType() == ResultSetType.SCROLL_INSENSITIVE
+        config.isMapUnderscoreToCamelCase()
+        config.isSafeRowBoundsEnabled()
+        config.getLocalCacheScope() == LocalCacheScope.STATEMENT
+        config.getJdbcTypeForNull() == JdbcType.NULL
+        config.getLazyLoadTriggerMethods() == new HashSet<>(Arrays.asList("equals", "clone", "hashCode", "toString", "xxx"))
+        !config.isSafeResultHandlerEnabled()
+        config.getDefaultScriptingLanuageInstance() instanceof RawLanguageDriver
+        config.isCallSettersOnNulls()
+        config.getLogPrefix() == "mybatis_"
+        config.getLogImpl().getName() == Slf4jImpl.class.getName()
+        config.getVfsImpl().getName() == JBoss6VFS.class.getName()
+        config.getConfigurationFactory().getName() == String.class.getName()
+        config.isShrinkWhitespacesInSql()
+        config.getDefaultSqlProviderType().getName() == XmlConfigBuilderTest.MySqlProvider.class.getName()
+
+        config.getTypeAliasRegistry().getTypeAliases().get("blogauthor") == Author.class
+        config.getTypeAliasRegistry().getTypeAliases().get("blog") == Blog.class
+        config.getTypeAliasRegistry().getTypeAliases().get("cart") == Cart.class
+
+        config.getTypeHandlerRegistry().getTypeHandler(Integer.class) instanceof CustomIntegerTypeHandler
+        config.getTypeHandlerRegistry().getTypeHandler(Long.class) instanceof CustomLongTypeHandler
+        config.getTypeHandlerRegistry().getTypeHandler(String.class) instanceof CustomStringTypeHandler
+        config.getTypeHandlerRegistry().getTypeHandler(String.class, JdbcType.VARCHAR) instanceof CustomStringTypeHandler
+        config.getTypeHandlerRegistry().getTypeHandler(RoundingMode.class) instanceof EnumOrdinalTypeHandler
+
+        ExampleObjectFactory objectFactory = (ExampleObjectFactory) config.getObjectFactory();
+        objectFactory.getProperties().size() == 1
+        objectFactory.getProperties().getProperty("objectFactoryProperty") == "100"
+
+        config.getObjectWrapperFactory() instanceof CustomObjectWrapperFactory
+
+        config.getReflectorFactory() instanceof CustomReflectorFactory
+
+        ExamplePlugin plugin = (ExamplePlugin) config.getInterceptors().get(0);
+        plugin.getProperties().size() == 1
+        plugin.getProperties().getProperty("pluginProperty") == "100"
+
+        Environment environment = config.getEnvironment();
+        environment.getId() == "development"
+        environment.getDataSource() instanceof UnpooledDataSource
+        environment.getTransactionFactory() instanceof JdbcTransactionFactory
+
+        config.getDatabaseId() == "derby"
+
+        config.getMapperRegistry().getMappers().size() == 4
+        config.getMapperRegistry().hasMapper(CachedAuthorMapper.class)
+        config.getMapperRegistry().hasMapper(CustomMapper.class)
+        config.getMapperRegistry().hasMapper(BlogMapper.class)
+        config.getMapperRegistry().hasMapper(NestedBlogMapper.class)
+    }
+
+    def "should Success fully Load XML Config File With Properties Url"() {
+        given: " resource"
+        String resource = "org/apache/ibatis/builder/PropertiesUrlMapperConfig.xml";
+
+        when: " read resource  as stream "
+        InputStream inputStream = Resources.getResourceAsStream(resource)
+
+        and: " create builder from stream"
+        XMLConfigBuilder builder = new XMLConfigBuilder(inputStream);
+
+        and: "build configuration"
+        Configuration config = builder.parse();
+
+        then: " config should be "
+        config.getVariables().get("driver").toString() == "org.apache.derby.jdbc.EmbeddedDriver"
+        config.getVariables().get("prop1").toString() == "bbbb"
+    }
+
+    def "parseIsTwice"() {
+        given: " resource"
+        String resource = "org/apache/ibatis/builder/MinimalMapperConfig.xml";
+
+        when: " read resource  as stream "
+        InputStream inputStream = Resources.getResourceAsStream(resource)
+
+        and: " create builder from stream"
+        XMLConfigBuilder builder = new XMLConfigBuilder(inputStream);
+
+        and: "build configuration"
+        Configuration config = builder.parse();
+
+        and: " parse again"
+        builder.parse()
+
+        then: " caught exception  Each XMLConfigBuilder can only be used once."
+        def caught = thrown(BuilderException.class)
+        caught.getMessage().contains('Each XMLConfigBuilder can only be used once.')
+    }
+
+
+    def "unknown Settings"() {
+        given: "xml config "
+        String MAPPER_CONFIG = '<?xml version="1.0" encoding="UTF-8" ?>\n' +
+                '<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">\n' +
+                '<configuration>\n' +
+                '  <settings>\n' +
+                '    <setting name="foo" value="bar"/>\n' +
+                '  </settings>\n' +
+                '</configuration>'
+
+        when: "build config  "
+        XMLConfigBuilder builder = new XMLConfigBuilder(new StringReader(MAPPER_CONFIG));
+        builder.parse();
+
+        then: " caught exception that foo is not know"
+        def caught = thrown(BuilderException.class)
+        caught.getMessage().contains('The setting foo is not known.  Make sure you spelled it correctly (case sensitive).')
+
+    }
+
+    def "unknown Java Type On Type Handler"() {
+        given: "xml config "
+        String MAPPER_CONFIG = '<?xml version="1.0" encoding="UTF-8" ?>\n' +
+                '<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">\n' +
+                '<configuration>\n' +
+                '  <typeAliases>\n' +
+                '    <typeAlias type="a.b.c.Foo"/>\n' +
+                '  </typeAliases>\n' +
+                '</configuration>'
+
+        when: "build config  "
+        XMLConfigBuilder builder = new XMLConfigBuilder(new StringReader(MAPPER_CONFIG));
+        builder.parse();
+
+        then: " caught exception that Error registering typeAlias for \\'null\\'. "
+        def caught = thrown(BuilderException.class)
+        caught.getMessage().contains('Error registering typeAlias for \'null\'. Cause: ')
+
+
+    }
+
+    def "properties Specify Resource And Url At Same Time"() {
+        given: "xml config "
+        String MAPPER_CONFIG = '<?xml version="1.0" encoding="UTF-8" ?>\n' +
+                '<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">\n' +
+                '<configuration>\n' +
+                '  <properties resource="a/b/c/foo.properties" url="file:./a/b/c/jdbc.properties"/>\n' +
+                '</configuration>'
+
+        when: "build config  "
+        XMLConfigBuilder builder = new XMLConfigBuilder(new StringReader(MAPPER_CONFIG));
+        builder.parse();
+
+        then: " caught exception that Error registering typeAlias for \\'null\\'. "
+        def caught = thrown(BuilderException.class)
+        caught.getMessage().contains('The properties element cannot specify both a URL and a resource based property file reference.  Please specify one or the other.')
+
+
     }
 
 

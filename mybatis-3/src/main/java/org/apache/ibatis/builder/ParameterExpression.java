@@ -67,6 +67,7 @@ public class ParameterExpression extends HashMap<String, String> {
   private void property(String expression, int left) {
     if (left < expression.length()) {
       int right = skipUntil(expression, left, ",:");
+      //添加默认属性名字为property
       put("property", trimmedStr(expression, left, right));
       jdbcTypeOpt(expression, right);
     }
