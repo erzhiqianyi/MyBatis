@@ -84,16 +84,19 @@ public class MapperBuilderAssistant extends BaseBuilder {
     return currentNamespace + "." + base;
   }
 
+  //查找缓存
   public Cache useCacheRef(String namespace) {
     if (namespace == null) {
       throw new BuilderException("cache-ref element requires a namespace attribute.");
     }
     try {
       unresolvedCacheRef = true;
+      //从配置钟查找对应缓存
       Cache cache = configuration.getCache(namespace);
       if (cache == null) {
         throw new IncompleteElementException("No cache for namespace '" + namespace + "' could be found.");
       }
+      //修改当前缓存为其他命名空间的缓存
       currentCache = cache;
       unresolvedCacheRef = false;
       return cache;
@@ -163,13 +166,15 @@ public class MapperBuilderAssistant extends BaseBuilder {
       Boolean autoMapping) {
     id = applyCurrentNamespace(id, false);
     extend = applyCurrentNamespace(extend, true);
-
     if (extend != null) {
+      //存在继承的resultMap
       if (!configuration.hasResultMap(extend)) {
         throw new IncompleteElementException("Could not find a parent resultmap with id '" + extend + "'");
       }
+      //获取父级别的ResultMap
       ResultMap resultMap = configuration.getResultMap(extend);
       List<ResultMapping> extendedResultMappings = new ArrayList<>(resultMap.getResultMappings());
+
       extendedResultMappings.removeAll(resultMappings);
       // Remove parent constructor if this resultMap declares a constructor.
       boolean declaresConstructor = false;
@@ -184,9 +189,11 @@ public class MapperBuilderAssistant extends BaseBuilder {
       }
       resultMappings.addAll(extendedResultMappings);
     }
+    //创建当前id的ResultMap
     ResultMap resultMap = new ResultMap.Builder(configuration, id, type, resultMappings, autoMapping)
         .discriminator(discriminator)
         .build();
+    //将当前ResultMap加入配置中
     configuration.addResultMap(resultMap);
     return resultMap;
   }

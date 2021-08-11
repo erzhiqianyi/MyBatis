@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
+ * 解析XML语句
  * @author Clinton Begin
  */
 public class XMLStatementBuilder extends BaseBuilder {
@@ -59,6 +60,7 @@ public class XMLStatementBuilder extends BaseBuilder {
 
     String nodeName = context.getNode().getNodeName();
     SqlCommandType sqlCommandType = SqlCommandType.valueOf(nodeName.toUpperCase(Locale.ENGLISH));
+    //判断SQL语句类型
     boolean isSelect = sqlCommandType == SqlCommandType.SELECT;
     boolean flushCache = context.getBooleanAttribute("flushCache", !isSelect);
     boolean useCache = context.getBooleanAttribute("useCache", isSelect);

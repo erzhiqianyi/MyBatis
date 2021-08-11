@@ -39,53 +39,53 @@ Myabits source read note and sample
     - [基础功能](#基础功能)
         - [annotations](#annotations)
             - [Java注解](#Java注解)
-              - [元注解](#元注解)
-              - [自定义注解](#自定义注解)
+                - [元注解](#元注解)
+                - [自定义注解](#自定义注解)
             - [Mybatis注解分类](#Mybatis注解分类)
-              - [定义SQL语句类型](#定义SQL语句类型)
-              - [处理输入参数](#处理输入参数)
-              - [处理返回结果](#处理返回结果)
-              - [处理缓存](#处理缓存)
-              - [通用功能](#通用功能)
+                - [定义SQL语句类型](#定义SQL语句类型)
+                - [处理输入参数](#处理输入参数)
+                - [处理返回结果](#处理返回结果)
+                - [处理缓存](#处理缓存)
+                - [通用功能](#通用功能)
         - [exceptions](#exceptions)
             - [Java中的异常](#Java中的异常)
         - [io](#io)
-          - [单例模式](#单例模式)
-          - [代理模式](#代理模式)
-          - [文件系统](#文件系统)
-          - [加载资源文件](#加载资源文件)
+            - [单例模式](#单例模式)
+            - [代理模式](#代理模式)
+            - [文件系统](#文件系统)
+            - [加载资源文件](#加载资源文件)
         - [lang](#lang)
         - [logging](#logging)
-          - [适配器模式](#适配器模式)
-          - [日志级别和日志框架](#日志级别和日志框架)
-          - [Log](#Log)
-          - [JDBC日志](JDBC日志)
+            - [适配器模式](#适配器模式)
+            - [日志级别和日志框架](#日志级别和日志框架)
+            - [Log](#Log)
+            - [JDBC日志](JDBC日志)
         - [reflection](#reflection)
-          - [装饰器模式](#装饰器模式)
-          - [反射](#反射)
-              - [反射功能](#反射功能)
-              - [反射基础包](#反射基础包)
-              - [反射常用操作](#反射常用操作)
-          - [工厂模式](#工厂模式)
+            - [装饰器模式](#装饰器模式)
+            - [反射](#反射)
+                - [反射功能](#反射功能)
+                - [反射基础包](#反射基础包)
+                - [反射常用操作](#反射常用操作)
+            - [工厂模式](#工厂模式)
         - [type](#type)
-          - [模板模式](#模板模式)
-          - [组织划分](#组织划分)
+            - [模板模式](#模板模式)
+            - [组织划分](#组织划分)
         - [parsing](#parsing)
-          - [XNode](#XNode)
-          - [XPathParser](#XPathParser)
+            - [XNode](#XNode)
+            - [XPathParser](#XPathParser)
     - [配置解析](#配置解析)
-      - [binding](#binding)
-        - [绑定流程](#绑定流程)
-      - [builder](#builder)
-        - [建造者模式](#建造者模式)
-        - [解析XML配置文件和映射文件](#解析XML配置文件和映射文件)
-        - [解析注解Mapper](#解析注解Mapper)
+        - [binding](#binding)
+            - [绑定流程](#绑定流程)
+        - [builder](#builder)
+            - [建造者模式](#建造者模式)
+            - [解析XML配置文件和映射文件](#解析XML配置文件和映射文件)
+            - [解析注解Mapper](#解析注解Mapper)
     - [核心操作](#核心操作)
 - [阅读技巧](#阅读技巧)
 - [设计思想](#设计思想)
     - [包划分](#包划分)
 - [代码实践](#代码实践)
-  - [工具类构造器私有化](#工具类构造器私有化)
+    - [工具类构造器私有化](#工具类构造器私有化)
 
 ## 源码阅读的意义
 
@@ -818,29 +818,34 @@ public class DefaultResultSetHandler implements ResultSetHandler {
 基础功能,工具类,日志,异常处理,文件IO
 
 #### annotations
- [annotations代码](mybatis-3/src/main/java/org/apache/ibatis/annotations)
+
+[annotations代码](mybatis-3/src/main/java/org/apache/ibatis/annotations)
 
 ##### Java注解
+
 标记作用
+
 ###### 元注解
+
 用来注解其他注解的的注解，
-- @Target 
-用来标记注解可以用在什么地方,类型为,可以同时使用多个
+
+- @Target 用来标记注解可以用在什么地方,类型为,可以同时使用多个
+
 ```java
 public enum ElementType {
-    /** 
+    /**
      * Class, interface (including annotation type), or enum declaration 
      * 类，接口，注解，枚举
      * */
     TYPE,
 
-    /** 
+    /**
      * Field declaration (includes enum constants) 
      * 字段
      * */
     FIELD,
 
-    /** 
+    /**
      * Method declaration 
      * 方法
      * */
@@ -852,10 +857,10 @@ public enum ElementType {
      * */
     PARAMETER,
 
-    /** 
+    /**
      * Constructor declaration 
      * 构造器
-     * 
+     *
      * */
     CONSTRUCTOR,
 
@@ -865,13 +870,13 @@ public enum ElementType {
      * */
     LOCAL_VARIABLE,
 
-    /** 
+    /**
      * Annotation type declaration 
      * 注解
      * */
     ANNOTATION_TYPE,
 
-    /** 
+    /**
      * Package declaration 
      * 包
      * */
@@ -893,8 +898,8 @@ public enum ElementType {
 }
 ``` 
 
-- @Retention
-注解的生命周期，注解会保留到哪一阶
+- @Retention 注解的生命周期，注解会保留到哪一阶
+
 ```java
 public enum RetentionPolicy {
     /**
@@ -922,50 +927,59 @@ public enum RetentionPolicy {
 
 ```
 
-- @Documented
-注解会在javadoc中生成
-  
-- @Inherited
-允许子类继承父类的该注解，不能从接口继承
-  
-- @Repeatable
-jdk8引入,注解可以在同一个地方可以重复使用多次
-  
+- @Documented 注解会在javadoc中生成
+
+- @Inherited 允许子类继承父类的该注解，不能从接口继承
+
+- @Repeatable jdk8引入,注解可以在同一个地方可以重复使用多次
+
 ###### 自定义注解
-使用元注解配置注解信息 
+
+使用元注解配置注解信息
 [自定义注解示例](mybatis-3/src/test/java/org/apache/ibatis/annotation/CustomizeAnnotationTest.java)
 
 ##### Mybatis注解分类
+
 ###### 基础功能
+
 - @Mapper 定义类是Mybatis mapper
 - @Lang 定义语言驱动
 - @Options 自定义用户行为
+
 ###### 定义SQL语句类型
+
 - @Select, @SelectProvider 查询语句
 - @Update, @UpdateProvider 更新语句
 - @Insert, @InsertProvider 插入语句
 - @Delete, @DeleteProvider 删除语句
 - @Flush 清除缓存
+
 ###### 处理输入参数
-- @Param 定义参数名字 
+
+- @Param 定义参数名字
+
 ###### 处理返回结果
-- @Arg  构造器参数
+
+- @Arg 构造器参数
 - @Case 在类型处理器中定义类型处理方式
 - @ConstructorArgs 构造器
-- @Many   内嵌 SQL 语句返回集合
+- @Many 内嵌 SQL 语句返回集合
 - @MapKey 定义map返回的key
-- @One  内嵌 SQL 返回单个结果
-- @Result  数据库字段和对象字段映射
+- @One 内嵌 SQL 返回单个结果
+- @Result 数据库字段和对象字段映射
 - @ResultMap 指定 result map
 - @Results 对Result 进行分组
 - @ResultType 指定返回类型
 - @TypeDiscriminator 类型处理器
+
 ###### 处理缓存
+
 - @CacheNamespace 缓存命名空间
 - @CacheNamespaceRef 缓存引用
 - @Property 注入缓存属性
 
 #### exceptions
+
 异常工厂和Mybatis异常父类
 [exceptions代码](mybatis-3/src/main/java/org/apache/ibatis/exceptions)  
 ![](uml/MyBatisException.png)
@@ -980,111 +994,113 @@ jdk8引入,注解可以在同一个地方可以重复使用多次
         - RuntimeException 运行时异常,如空指针异常,
         - CheckException 受检查异常，不可预知和避免，需要处理
 
-#####  io
+##### io
+
 [io代码](mybatis-3/src/main/java/org/apache/ibatis/io)
 负责Mybatis输入和输出，对XML文件和类文件的操作
+
 ##### 单例模式
+
 保证类的对象唯一
 [单例模式示例](mybatis-3/src/test/groovy/org/apache/ibatis/io/singleton)
+
 - 枚举实现
 - 懒汉模式
-- 饿汉式 
+- 饿汉式
 - 双重锁
+
 ##### 代理模式
+
 建立某一个对象的代理对象，并由代理对象控制元对象的引用
+
 - 作用
-  - 隔离功能 
-    - 防止外部对目标对象进行直接操作
-    - 在代理商对象中增加功能
-  - 扩展功能
-    - 在代理对象中添加更多扩展功能，如增加日志
-  - 直接替换
-    - 用代理对象替换目对象，由代理商对象实现全部功能
+    - 隔离功能
+        - 防止外部对目标对象进行直接操作
+        - 在代理商对象中增加功能
+    - 扩展功能
+        - 在代理对象中添加更多扩展功能，如增加日志
+    - 直接替换
+        - 用代理对象替换目对象，由代理商对象实现全部功能
 - 类型
-  - 静态代理
-    - 代理商对象和被代理对象在程序中是确定的，不会在运行时发生变化
+    - 静态代理
+        - 代理商对象和被代理对象在程序中是确定的，不会在运行时发生变化
+
 ##### 文件系统
+
 - VFS(Virtual File System)
   单例模式 只有一个唯一的VFSHolder
-  - JBoss6VFS
-  - DefaultVFS
+    - JBoss6VFS
+    - DefaultVFS
+
 ##### 加载类资源文件
-  - ClassLoaderWrapper 
-    加载类
-  - Resources
-    读取资源文件
-  - 
+
+- ClassLoaderWrapper 加载类
+- Resources 读取资源文件
+-
+
 #### lang
+
 [lang代码](mybatis-3/src/main/java/org/apache/ibatis/lang)
 指定API使用Java版本注解
 
-#### logging 
+#### logging
+
 完成日志记录
 [logging代码](mybatis-3/src/main/java/org/apache/ibatis/logging)
 
 ##### 适配器模式
+
 在两个或多个不兼容的类之间起到沟通桥梁的作用,适用于无法修改目标类的场景
 [实例代码](mybatis-3/src/test/groovy/org/apache/ibatis/logging/adapter)
 
 ##### 日志级别和日志框架
+
 - 常用日志框架
-  - log4j
-  - Logging
-  - commons-logging
-  - slf4j
-  - logback
+    - log4j
+    - Logging
+    - commons-logging
+    - slf4j
+    - logback
 - 日志级别
-  - Fatal 
-    致命等级，导致应用程序退出
-  - Error
-    错误等级，发生了错误，不影响程序运行
-  - Warn
-    警告等级，发生了异常，可能存在潜在错误
-  - Info
-    信息等级，需要强调的应用程序运行信息
-  - Debug
-    调试等级，对调试有帮助的信息
-  - Trace 
-    跟踪等级，程序运行详细过程信息
-  
+    - Fatal 致命等级，导致应用程序退出
+    - Error 错误等级，发生了错误，不影响程序运行
+    - Warn 警告等级，发生了异常，可能存在潜在错误
+    - Info 信息等级，需要强调的应用程序运行信息
+    - Debug 调试等级，对调试有帮助的信息
+    - Trace 跟踪等级，程序运行详细过程信息
+
 ##### Log
+
 - 接口
-  - error(String s, Throwable e); 
-     打印error日志 
-  - error(String s);
-    打印error日志
-  - debug(String s);
-    打印debug日志
-  - trace(String s);
-    打印trace日志
-  - warn(String s);
-    打印warn日志
-  - isDebugEnabled();
-    判断打印debug日志功能是否开启，debug日志适用于开发阶段，在生产中不推荐，通过配置来修改是否打印
-  - isTraceEnabled();
-    判断打印trace日志功能是否开启, trace日志适用于开发阶段， 在生产中不推荐，通过配置来修改是否打印
+    - error(String s, Throwable e); 打印error日志
+    - error(String s); 打印error日志
+    - debug(String s); 打印debug日志
+    - trace(String s); 打印trace日志
+    - warn(String s); 打印warn日志
+    - isDebugEnabled(); 判断打印debug日志功能是否开启，debug日志适用于开发阶段，在生产中不推荐，通过配置来修改是否打印
+    - isTraceEnabled(); 判断打印trace日志功能是否开启, trace日志适用于开发阶段， 在生产中不推荐，通过配置来修改是否打印
 - 实现
-  - NoLoggingImpl
-    不做任何日志
-  - StdOutImpl
-    使用 ```System.out.println``` 或 ```System.err.println``` 打印
-  - 装饰器实现
-    - Slf4jLocationAwareLoggerImpl
-    - Slf4jLoggerImpl
-    - Log4j2AbstractLoggerImpl
-    - Log4j2LoggerImpl
-  - 适配器模式
-    - JakartaCommonsLoggingImpl
-    - Jdk14LoggingImpl
-    - Log4jImpl
-    - Log4j2Impl
-    - Slf4jImpl
-     
+    - NoLoggingImpl 不做任何日志
+    - StdOutImpl 使用 ```System.out.println``` 或 ```System.err.println``` 打印
+    - 装饰器实现
+        - Slf4jLocationAwareLoggerImpl
+        - Slf4jLoggerImpl
+        - Log4j2AbstractLoggerImpl
+        - Log4j2LoggerImpl
+    - 适配器模式
+        - JakartaCommonsLoggingImpl
+        - Jdk14LoggingImpl
+        - Log4jImpl
+        - Log4j2Impl
+        - Slf4jImpl
+
 ##### JDBC日志
+
 使用代理模式，将JDBC操作日志打印出来
-- BaseJdbcLogger
-基本功能
-- 
+
+- BaseJdbcLogger 基本功能
+-
+
 ##### 日志配置
 
 #### reflection
@@ -1184,68 +1200,81 @@ jdk8引入,注解可以在同一个地方可以重复使用多次
     - 获取方法:  getDeclaredMethod(String name, Class<?>... parameterTypes)
     - 设置访问权限: setAccessible(boolean flag)
     - 执行方法: invoke(Object obj, Object... args)
+
 ###### 动态代理
-直接创建接口的实例
-通过 ```Roroxy.newInstance()``` 创建接口对象
+
+直接创建接口的实例 通过 ```Roroxy.newInstance()``` 创建接口对象
 
 利用反射实现动态代理
 [实例代码](mybatis-3/src/test/java/org/apache/ibatis/reflection/proxy/DynamicProxyTest.java)
+
 #### 工厂模式
+
 ObjectFactory
+
 ```java
 public interface ObjectFactory {
     /**
      * 设置工厂属性
      */
-  default void setProperties(Properties properties) {
-    // NOP
-  }
+    default void setProperties(Properties properties) {
+        // NOP
+    }
 
     /**
      * 使用默认构造器创建对象
      */
-  <T> T create(Class<T> type);
+    <T> T create(Class<T> type);
 
 
     /**
      * 使用给定的构造器创建对象
      */
-  <T> T create(Class<T> type, List<Class<?>> constructorArgTypes, List<Object> constructorArgs);
+    <T> T create(Class<T> type, List<Class<?>> constructorArgTypes, List<Object> constructorArgs);
 
-  
-  <T> boolean isCollection(Class<T> type);
+
+    <T> boolean isCollection(Class<T> type);
 
 }
 ```
+
 DefaultObjectFactory 默认实现
+
 ##### 类型实现
-- List,Collection,Iterable
-  转成 ArrayList
-- Map
-  转成 HashMap
-- SortedSet
-  转成 TreeSet
-- Set
-  转成 HashSet
-- 其他类型
-  转成原始类型
+
+- List,Collection,Iterable 转成 ArrayList
+- Map 转成 HashMap
+- SortedSet 转成 TreeSet
+- Set 转成 HashSet
+- 其他类型 转成原始类型
+
 #### 执行器 Invoker
+
 ```java
 public interface Invoker {
-  Object invoke(Object target, Object[] args) throws IllegalAccessException, InvocationTargetException;
+    Object invoke(Object target, Object[] args) throws IllegalAccessException, InvocationTargetException;
 
-  Class<?> getType();
+    Class<?> getType();
 }
 
 ```
-##### GetFieldInvoker 
+
+##### GetFieldInvoker
+
 对象属性的读操作
+
 ##### SetFieldInvoker
+
 对象属性的写操作
+
 ##### MethodInvoker
+
 其他方法的操作
+
 #### MyBatis反射核心
+
 ```Reflector```
+
 ```java
 public class Reflector {
 
@@ -1274,92 +1303,129 @@ public class Reflector {
     private Map<String, String> caseInsensitivePropertyMap = new HashMap<>();
 }
 ```
-####  parsing
+
+#### parsing
+
 解析包
+
 ##### XNode
+
 封装 ```org.w3c.dom.Node```
 
 ##### XPathParser
+
 封装 ```javax.xml.xpath.XPath```
 
- [parsing代码](mybatis-3/src/main/java/org/apache/ibatis/parsing)
+[parsing代码](mybatis-3/src/main/java/org/apache/ibatis/parsing)
+
 #### type
+
 负责类型处理,处理Java对象和数据库关系之间的映射
 
 [type代码](mybatis-3/src/main/java/org/apache/ibatis/type)
+
 ##### 模板模式
+
 抽象类定义操作的整体步骤，子类完成每个步骤的具体实现
 
 ##### 组织划分
+
 - 类型处理器
-  - [TypeHandler](mybatis-3/src/main/java/org/apache/ibatis/type/TypeHandler.java)
-    类型处理器接口, 处理输入参数到SQL语句的映射和数据库关系到结果的映射
-    ```java
-    public interface TypeHandler<T> {
-       void setParameter(PreparedStatement ps, int i, T parameter, JdbcType jdbcType) throws SQLException;
-       T getResult(ResultSet rs, String columnName) throws SQLException;
-       T getResult(ResultSet rs, int columnIndex) throws SQLException;
-       T getResult(CallableStatement cs, int columnIndex) throws SQLException;
-    }
-    ```
-  - [BaseTypeHandler](mybatis-3/src/main/java/org/apache/ibatis/type/BaseTypeHandler.java)
-    类型处理器的基本实现  ,使用模板模式，定义模板框架
-    ```java
-        public abstract class BaseTypeHandler<T> extends TypeReference<T> implements TypeHandler<T> {
-              public abstract void setNonNullParameter(PreparedStatement ps, int i, T parameter, JdbcType jdbcType) throws SQLException;
-              public abstract T getNullableResult(ResultSet rs, String columnName) throws SQLException;
-              public abstract T getNullableResult(ResultSet rs, int columnIndex) throws SQLException;
-              public abstract T getNullableResult(CallableStatement cs, int columnIndex) throws SQLException;
-        }
-    ``` 
-  - [TypeReference](mybatis-3/src/main/java/org/apache/ibatis/type/TypeReference.java)
-    类型参考器 ,判断TypeHandler 用来处理的目标类型
-  - [*TypeHandler](mybatis-3/src/main/java/org/apache/ibatis/type)
-    43个类型处理器
-    根据实际类型，从结果集中取出对应类型的数据 ，可读取的数据类参考 ResultSet
+    - [TypeHandler](mybatis-3/src/main/java/org/apache/ibatis/type/TypeHandler.java)
+      类型处理器接口, 处理输入参数到SQL语句的映射和数据库关系到结果的映射
+      ```java
+      public interface TypeHandler<T> {
+         void setParameter(PreparedStatement ps, int i, T parameter, JdbcType jdbcType) throws SQLException;
+         T getResult(ResultSet rs, String columnName) throws SQLException;
+         T getResult(ResultSet rs, int columnIndex) throws SQLException;
+         T getResult(CallableStatement cs, int columnIndex) throws SQLException;
+      }
+      ```
+    - [BaseTypeHandler](mybatis-3/src/main/java/org/apache/ibatis/type/BaseTypeHandler.java)
+      类型处理器的基本实现 ,使用模板模式，定义模板框架
+      ```java
+          public abstract class BaseTypeHandler<T> extends TypeReference<T> implements TypeHandler<T> {
+                public abstract void setNonNullParameter(PreparedStatement ps, int i, T parameter, JdbcType jdbcType) throws SQLException;
+                public abstract T getNullableResult(ResultSet rs, String columnName) throws SQLException;
+                public abstract T getNullableResult(ResultSet rs, int columnIndex) throws SQLException;
+                public abstract T getNullableResult(CallableStatement cs, int columnIndex) throws SQLException;
+          }
+      ``` 
+    - [TypeReference](mybatis-3/src/main/java/org/apache/ibatis/type/TypeReference.java)
+      类型参考器 ,判断TypeHandler 用来处理的目标类型
+    - [*TypeHandler](mybatis-3/src/main/java/org/apache/ibatis/type)
+      43个类型处理器 根据实际类型，从结果集中取出对应类型的数据 ，可读取的数据类参考 ResultSet
 - 类型注册表  
-   注册类型对应的处理器，查类型处理器
-  - [SimpleTypeRegistry](mybatis-3/src/main/java/org/apache/ibatis/type/SimpleTypeRegistry.java)
-    基本类型注册表，基本数据类型集合
-  - [TypeAliasRegistry](mybatis-3/src/main/java/org/apache/ibatis/type/TypeAliasRegistry.java)
-    类型别名注册表，类型的别名和类型的映射关系
-  - [TypeHandlerRegistry](mybatis-3/src/main/java/org/apache/ibatis/type/TypeHandlerRegistry.java)
-    类型注册表，所有类型与对应类型处理器的映射关系,一个Java类型在设计数据库实现时，可以对应多个数据库类型。存在一对多情况
-  - 
+  注册类型对应的处理器，查类型处理器
+    - [SimpleTypeRegistry](mybatis-3/src/main/java/org/apache/ibatis/type/SimpleTypeRegistry.java)
+      基本类型注册表，基本数据类型集合
+    - [TypeAliasRegistry](mybatis-3/src/main/java/org/apache/ibatis/type/TypeAliasRegistry.java)
+      类型别名注册表，类型的别名和类型的映射关系
+    - [TypeHandlerRegistry](mybatis-3/src/main/java/org/apache/ibatis/type/TypeHandlerRegistry.java)
+      类型注册表，所有类型与对应类型处理器的映射关系,一个Java类型在设计数据库实现时，可以对应多个数据库类型。存在一对多情况
+    -
 - 注解
-  - Alias
-   给类设置别名
-  - MappedJdbcTypes
-   自定义处理器处理Jdbc类型
-  - MappedTypes
-    自定义类型处理器处理Java类型
+    - Alias 给类设置别名
+    - MappedJdbcTypes 自定义处理器处理Jdbc类型
+    - MappedTypes 自定义类型处理器处理Java类型
 - 工具
+
 #### 配置解析
+
 ##### binding
+
 [binding代码](mybatis-3/src/main/java/org/apache/ibatis/binding)
 
 ##### 绑定流程
+
 处理Java方法与SQL语句之间绑定关系
+
 ###### 为映射接口中的抽象方法接入对应的数据库操作
-- 数据库操作方法化
-通过 ```execute``` 触发SQL操作
-  - 数据库操作方法接入
-通过```MapperProxy``` 动态代理,将映射接口的方法调用转接成对 ```MapperMethod```的execute方法调用,实现数据库操作
+
+- 数据库操作方法化 通过 ```execute``` 触发SQL操作
+    - 数据库操作方法接入 通过```MapperProxy``` 动态代理,将映射接口的方法调用转接成对 ```MapperMethod```的execute方法调用,实现数据库操作
+
 ###### 维护映射接口抽象方法与数据库操作节点之间的关联关系
-- 将映射接口和MapperProxyFactory  关联
-  MapperRegistry绑定类型和 MapperProxyFactory 。
+
+- 将映射接口和MapperProxyFactory 关联 MapperRegistry绑定类型和 MapperProxyFactory 。
 - 通过MapperProxy找到合适的MapperMethod 对象，执行 ```execute```
 
 ##### builder
+
 [builder代码](mybatis-3/src/main/java/org/apache/ibatis/builder)
+
 ###### 建造者模式
+
 对象属性较多时，使用 builder 来构建对象
 [示例代码](mybatis-3/src/test/groovy/org/apache/ibatis/builder)
+
 ###### 解析XML配置文件和映射文件
+
+将xml描述的配置和sql语句转成相应对象
+
 ###### 解析注解Mapper
-- [mapping](mybatis-3/src/main/java/org/apache/ibatis/mapping)
-- [scripting](mybatis-3/src/main/java/org/apache/ibatis/scripting)
-- [datasource](mybatis-3/src/main/java/org/apache/ibatis/datasource)
+
+将注解描述的配置和sql语句转成相应对象
+
+###### 解析出来的对象
+
+- [Configuration](mybatis-3/src/main/java/org/apache/ibatis/session/Configuration.java)
+- [ParameterMap](mybatis-3/src/main/java/org/apache/ibatis/mapping/ParameterMap.java)
+- [ResultMap](mybatis-3/src/main/java/org/apache/ibatis/mapping/ResultMap.java)
+- [Discriminator](mybatis-3/src/main/java/org/apache/ibatis/mapping/Discriminator.java)
+- [MappedStatement](mybatis-3/src/main/java/org/apache/ibatis/mapping/MappedStatement.java)
+
+##### mapping
+
+[mapping代码](mybatis-3/src/main/java/org/apache/ibatis/mapping)
+
+##### scripting
+
+[scripting代码](mybatis-3/src/main/java/org/apache/ibatis/scripting)
+
+##### datasource
+
+[datasource代码](mybatis-3/src/main/java/org/apache/ibatis/datasource)
 
 #### 核心操作
 
@@ -1383,7 +1449,8 @@ public class Reflector {
 - 按照类型划分 功能耦合度低供多个功能使用的类按类型划分
 - 按照功能方式划分 将耦合度高的类按照功能划分
 
-
 ## 代码实践
+
 ### 工具类构造器私有化
+
 工具类构造器私有化，避免被实例

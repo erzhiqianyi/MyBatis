@@ -22,6 +22,7 @@ import org.apache.ibatis.mapping.ResultMapping;
 import java.util.List;
 
 /**
+ * 解析ResultMap 及继承关系
  * @author Eduardo Macarron
  */
 public class ResultMapResolver {
@@ -44,6 +45,7 @@ public class ResultMapResolver {
   }
 
   public ResultMap resolve() {
+    //添加resultMap
     return assistant.addResultMap(this.id, this.type, this.extend, this.discriminator, this.resultMappings, this.autoMapping);
   }
 

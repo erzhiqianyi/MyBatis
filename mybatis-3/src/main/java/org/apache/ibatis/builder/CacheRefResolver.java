@@ -18,10 +18,13 @@ package org.apache.ibatis.builder;
 import org.apache.ibatis.cache.Cache;
 
 /**
+ * 多个命名空间之间共享缓存
  * @author Clinton Begin
  */
 public class CacheRefResolver {
   private final MapperBuilderAssistant assistant;
+
+  //缓存空间
   private final String cacheRefNamespace;
 
   public CacheRefResolver(MapperBuilderAssistant assistant, String cacheRefNamespace) {

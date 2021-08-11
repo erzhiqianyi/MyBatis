@@ -27,8 +27,17 @@ import java.util.List;
  */
 public class StaticSqlSource implements SqlSource {
 
+  /**
+   * sql 语句
+   */
   private final String sql;
+  /**
+   * 参数
+   */
   private final List<ParameterMapping> parameterMappings;
+  /**
+   * 配置
+   */
   private final Configuration configuration;
 
   public StaticSqlSource(Configuration configuration, String sql) {

@@ -31,6 +31,7 @@ import java.util.Optional;
 import java.util.Properties;
 
 /**
+ * 处理SQL语句引用
  * @author Frank D. Martinez [mnesarco]
  */
 public class XMLIncludeTransformer {

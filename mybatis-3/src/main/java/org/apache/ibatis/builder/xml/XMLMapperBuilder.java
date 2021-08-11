@@ -32,6 +32,7 @@ import java.io.Reader;
 import java.util.*;
 
 /**
+ * 解析 XML mapper文件
  * @author Clinton Begin
  * @author Kazuki Shimizu
  */
@@ -74,11 +75,13 @@ public class XMLMapperBuilder extends BaseBuilder {
 
   public void parse() {
     if (!configuration.isResourceLoaded(resource)) {
+      // 解析mapper节点
       configurationElement(parser.evalNode("/mapper"));
       configuration.addLoadedResource(resource);
       bindMapperForNamespace();
     }
 
+    // 处理暂时无法找到的依赖
     parsePendingResultMaps();
     parsePendingCacheRefs();
     parsePendingStatements();
@@ -90,16 +93,24 @@ public class XMLMapperBuilder extends BaseBuilder {
 
   private void configurationElement(XNode context) {
     try {
+      //获取到明明空点
       String namespace = context.getStringAttribute("namespace");
       if (namespace == null || namespace.isEmpty()) {
         throw new BuilderException("Mapper's namespace cannot be empty");
       }
+
       builderAssistant.setCurrentNamespace(namespace);
+      //解析缓存引用
       cacheRefElement(context.evalNode("cache-ref"));
+      //解析缓存
       cacheElement(context.evalNode("cache"));
+      //解析参数
       parameterMapElement(context.evalNodes("/mapper/parameterMap"));
+      //解析返回结果
       resultMapElements(context.evalNodes("/mapper/resultMap"));
+      //解析SQL语句
       sqlElement(context.evalNodes("/mapper/sql"));
+      //解析增删改查操作
       buildStatementFromContext(context.evalNodes("select|insert|update|delete"));
     } catch (Exception e) {
       throw new BuilderException("Error parsing Mapper XML. The XML location is '" + resource + "'. Cause: " + e, e);

@@ -18,6 +18,7 @@ package org.apache.ibatis.builder;
 import java.util.HashMap;
 
 /**
+ * 将描述属性的字符串解析成键值对的形式
  * Inline parameter expression parser. Supported grammar (simplified):
  *
  * <pre>
