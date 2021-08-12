@@ -189,6 +189,7 @@ public class MapperAnnotationBuilder {
     }
 
     private String parseResultMap(Method method) {
+        //读取注解信息
         Class<?> returnType = getReturnType(method);
         Arg[] args = method.getAnnotationsByType(Arg.class);
         Result[] results = method.getAnnotationsByType(Result.class);

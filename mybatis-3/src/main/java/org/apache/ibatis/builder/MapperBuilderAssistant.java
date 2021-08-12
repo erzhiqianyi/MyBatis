@@ -87,6 +87,7 @@ public class MapperBuilderAssistant extends BaseBuilder {
   //查找缓存
   public Cache useCacheRef(String namespace) {
     if (namespace == null) {
+      //为什么抛异常
       throw new BuilderException("cache-ref element requires a namespace attribute.");
     }
     try {

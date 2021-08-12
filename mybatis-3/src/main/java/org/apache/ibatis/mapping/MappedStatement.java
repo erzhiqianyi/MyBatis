@@ -40,6 +40,7 @@ public final class MappedStatement {
   private Integer timeout;
   private StatementType statementType;
   private ResultSetType resultSetType;
+  //SQL语句
   private SqlSource sqlSource;
   private Cache cache;
   private ParameterMap parameterMap;
@@ -47,14 +48,18 @@ public final class MappedStatement {
   private boolean flushCacheRequired;
   private boolean useCache;
   private boolean resultOrdered;
+  // SQL类型
   private SqlCommandType sqlCommandType;
   private KeyGenerator keyGenerator;
+  // 属性
   private String[] keyProperties;
+  //字段
   private String[] keyColumns;
   private boolean hasNestedResultMaps;
   private String databaseId;
   private Log statementLog;
   private LanguageDriver lang;
+  //返回结果
   private String[] resultSets;
 
   MappedStatement() {
