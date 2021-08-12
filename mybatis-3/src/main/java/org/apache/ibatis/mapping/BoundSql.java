@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 经过处理后的SQL语句,SQL语句中不含其他标签，只有 ?
  * An actual SQL String got from an {@link SqlSource} after having processed any dynamic content.
  * The SQL may have SQL placeholders "?" and an list (ordered) of an parameter mappings
  * with the additional information for each parameter (at least the property name of the input object to read
@@ -35,10 +36,24 @@ import java.util.Map;
  */
 public class BoundSql {
 
+  /**
+   * 可能含由 ？ 占位符的SQL 语句
+   */
   private final String sql;
+  /**
+   * 参数映射列表
+   */
   private final List<ParameterMapping> parameterMappings;
+  /**
+   * 实际参数对象本身
+   */
+
   private final Object parameterObject;
+  /**
+   * 实参
+   */
   private final Map<String, Object> additionalParameters;
+
   private final MetaObject metaParameters;
 
   public BoundSql(Configuration configuration, String sql, List<ParameterMapping> parameterMappings, Object parameterObject) {

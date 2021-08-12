@@ -21,6 +21,7 @@ import org.apache.ibatis.mapping.SqlSource;
 import org.apache.ibatis.session.Configuration;
 
 /**
+ * 动态SQL语句，包含 if 节点 或  ${} 占位符
  * @author Clinton Begin
  */
 public class DynamicSqlSource implements SqlSource {

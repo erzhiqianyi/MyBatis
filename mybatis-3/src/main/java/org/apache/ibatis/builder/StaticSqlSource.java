@@ -23,6 +23,7 @@ import org.apache.ibatis.session.Configuration;
 import java.util.List;
 
 /**
+ * 静态SQL语句　，可能含有？　可以直接由数据库执行
  * @author Clinton Begin
  */
 public class StaticSqlSource implements SqlSource {

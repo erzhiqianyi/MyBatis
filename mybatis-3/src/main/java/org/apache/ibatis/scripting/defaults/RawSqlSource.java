@@ -28,7 +28,7 @@ import java.util.HashMap;
 /**
  * Static SqlSource. It is faster than {@link DynamicSqlSource} because mappings are
  * calculated during startup.
- *
+ * 原生SQL语句，非动态SQL语句，可能含 #{} 占位符
  * @since 3.2.0
  * @author Eduardo Macarron
  */

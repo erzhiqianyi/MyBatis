@@ -1424,6 +1424,13 @@ public class Reflector {
 [mapping代码](mybatis-3/src/main/java/org/apache/ibatis/mapping)
 
 ###### SQL语句处理
+处理SQL语句
+- [MappedStatement](mybatis-3/src/main/java/org/apache/ibatis/mapping/MappedStatement.java)
+数据库操作节点，增删改查的类容
+- [SqlSource](mybatis-3/src/main/java/org/apache/ibatis/mapping/SqlSource.java)
+SQL语句
+- [BoundSql](mybatis-3/src/main/java/org/apache/ibatis/mapping/BoundSql.java)
+经过SqlSource处理后的SQL语句
 
 ###### 输出结果功能处理](#输出结果功能处理)
 ###### 输入参数处理
