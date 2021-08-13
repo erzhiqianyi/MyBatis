@@ -26,13 +26,27 @@ import java.util.Map;
 public class ForEachSqlNode implements SqlNode {
   public static final String ITEM_PREFIX = "__frch_";
 
+  //表达式计算
   private final ExpressionEvaluator evaluator;
+
   private final String collectionExpression;
+
+  //SQL内容
   private final SqlNode contents;
+
+  //开始标记
   private final String open;
+
+  //结束标记
   private final String close;
+
+  //分隔符
   private final String separator;
+
+  //迭代的内容
   private final String item;
+
+  //索引
   private final String index;
   private final Configuration configuration;
 

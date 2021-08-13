@@ -23,6 +23,8 @@ import org.apache.ibatis.type.SimpleTypeRegistry;
 import java.util.regex.Pattern;
 
 /**
+ * 解析 ${}
+ * ${} 代码没有经过预处理，可能出现SQL注入
  * @author Clinton Begin
  */
 public class TextSqlNode implements SqlNode {

@@ -22,11 +22,17 @@ import java.util.List;
 
 /**
  * @author Clinton Begin
+ * 参数映射
  */
 public class ParameterMap {
 
+  //映射id
   private String id;
+
+  //参数类型
   private Class<?> type;
+
+
   private List<ParameterMapping> parameterMappings;
 
   private ParameterMap() {

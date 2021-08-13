@@ -48,6 +48,7 @@ class OgnlMemberAccess implements MemberAccess {
       AccessibleObject accessible = (AccessibleObject) member;
       if (!accessible.isAccessible()) {
         result = Boolean.FALSE;
+        //修改可访问为true
         accessible.setAccessible(true);
       }
     }

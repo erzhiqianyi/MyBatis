@@ -30,15 +30,33 @@ import java.util.Set;
  */
 public class ResultMapping {
 
+  //配置属性
   private Configuration configuration;
+
+  //java属性
   private String property;
+
+  //字段
   private String column;
+
+  //java类型
   private Class<?> javaType;
+
+  //jdbc类型
   private JdbcType jdbcType;
+
+  //类型处理器
   private TypeHandler<?> typeHandler;
+
+  //嵌套resultMap 编号
   private String nestedResultMapId;
+
+  //嵌套查询编号
   private String nestedQueryId;
+
+  //非空字段
   private Set<String> notNullColumns;
+
   private String columnPrefix;
   private List<ResultFlag> flags;
   private List<ResultMapping> composites;
@@ -49,6 +67,9 @@ public class ResultMapping {
   ResultMapping() {
   }
 
+  /**
+   * 构造器
+   */
   public static class Builder {
     private ResultMapping resultMapping = new ResultMapping();
 

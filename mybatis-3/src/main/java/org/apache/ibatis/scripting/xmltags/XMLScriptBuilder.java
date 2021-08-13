@@ -34,9 +34,15 @@ import java.util.Map;
  */
 public class XMLScriptBuilder extends BaseBuilder {
 
+  //要处理的XML节点
   private final XNode context;
+
+  //是否是动态节点
   private boolean isDynamic;
+
+  //输入参数类型
   private final Class<?> parameterType;
+  //节点类型及处理器
   private final Map<String, NodeHandler> nodeHandlerMap = new HashMap<>();
 
   public XMLScriptBuilder(Configuration configuration, XNode context) {
@@ -63,6 +69,10 @@ public class XMLScriptBuilder extends BaseBuilder {
     nodeHandlerMap.put("bind", new BindHandler());
   }
 
+  /**
+   * 解析节点， 生成SqlSource对象
+   * @return SqlSource对象
+   */
   public SqlSource parseScriptNode() {
     MixedSqlNode rootSqlNode = parseDynamicTags(context);
     SqlSource sqlSource;

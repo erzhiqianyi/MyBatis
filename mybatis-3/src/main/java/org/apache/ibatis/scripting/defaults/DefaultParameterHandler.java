@@ -33,6 +33,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
+ * 默认参数解析器
  * @author Clinton Begin
  * @author Eduardo Macarron
  */
@@ -60,6 +61,7 @@ public class DefaultParameterHandler implements ParameterHandler {
 
   @Override
   public void setParameters(PreparedStatement ps) {
+    //设置SQL 参数
     ErrorContext.instance().activity("setting parameters").object(mappedStatement.getParameterMap().getId());
     List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
     if (parameterMappings != null) {

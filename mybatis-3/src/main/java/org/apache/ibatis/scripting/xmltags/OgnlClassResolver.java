@@ -31,6 +31,7 @@ public class OgnlClassResolver extends DefaultClassResolver {
 
   @Override
   protected Class toClassForName(String className) throws ClassNotFoundException {
+    //通过 Resources  加载类
     return Resources.classForName(className);
   }
 

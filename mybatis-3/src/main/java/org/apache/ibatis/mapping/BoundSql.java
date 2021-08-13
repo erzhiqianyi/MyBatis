@@ -61,6 +61,7 @@ public class BoundSql {
     this.parameterMappings = parameterMappings;
     this.parameterObject = parameterObject;
     this.additionalParameters = new HashMap<>();
+    //将参数类型用MetaObject包转起来
     this.metaParameters = configuration.newMetaObject(additionalParameters);
   }
 

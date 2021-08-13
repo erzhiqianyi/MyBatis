@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 表达式求值器，封装求值计算
  * @author Clinton Begin
  */
 public class ExpressionEvaluator {

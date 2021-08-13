@@ -24,11 +24,14 @@ import java.sql.ResultSet;
 
 /**
  * @author Clinton Begin
+ * 参数映射详情
  */
 public class ParameterMapping {
 
+  //配置
   private Configuration configuration;
 
+  //属性
   private String property;
   private ParameterMode mode;
   private Class<?> javaType = Object.class;

@@ -22,10 +22,12 @@ import java.util.Map;
 
 /**
  * @author Clinton Begin
+ * 鉴别器，根据条件进行映射
  */
 public class Discriminator {
 
   private ResultMapping resultMapping;
+
   private Map<String, String> discriminatorMap;
 
   Discriminator() {

@@ -82,9 +82,16 @@ Myabits source read note and sample
             - [解析注解Mapper](#解析注解Mapper)
         - [mapping](#mapping)
             - [SQL语句处理](#SQL语句处理)
-            - [输出结果功能处理](#输出结果功能处理)
+            - [输出结果处理](#输出结果处理)
             - [输入参数处理](#输入参数处理)
             - [多种数据库种类处理](#多种数据库种类处理)
+        - [scripting](#scripting)
+            - [语言驱动接口](#语言驱动接口)
+            - [构建SQL节点树](#构建SQL节点树)
+            - [解析SQL节点树](#解析SQL节点树)
+            - [动态节点解析](#动态节点解析)
+        - [datasource](#datasource)
+            - [JDBC操作](#JDBC操作)
     - [核心操作](#核心操作)
 - [阅读技巧](#阅读技巧)
 - [设计思想](#设计思想)
@@ -1421,28 +1428,93 @@ public class Reflector {
 - [MappedStatement](mybatis-3/src/main/java/org/apache/ibatis/mapping/MappedStatement.java)
 
 ##### mapping
+
 [mapping代码](mybatis-3/src/main/java/org/apache/ibatis/mapping)
 
 ###### SQL语句处理
-处理SQL语句
-- [MappedStatement](mybatis-3/src/main/java/org/apache/ibatis/mapping/MappedStatement.java)
-数据库操作节点，增删改查的类容
-- [SqlSource](mybatis-3/src/main/java/org/apache/ibatis/mapping/SqlSource.java)
-SQL语句
-- [BoundSql](mybatis-3/src/main/java/org/apache/ibatis/mapping/BoundSql.java)
-经过SqlSource处理后的SQL语句
 
-###### 输出结果功能处理](#输出结果功能处理)
+处理SQL语句
+
+- [MappedStatement](mybatis-3/src/main/java/org/apache/ibatis/mapping/MappedStatement.java)
+  数据库操作节点，增删改查的类容
+- [SqlSource](mybatis-3/src/main/java/org/apache/ibatis/mapping/SqlSource.java)
+  SQL语句
+- [BoundSql](mybatis-3/src/main/java/org/apache/ibatis/mapping/BoundSql.java)
+  经过SqlSource处理后的SQL语句
+
+###### 输出结果处理
+
+讲SQL结果映射为对应的Java对象
+
+- [ResultMap](mybatis-3/src/main/java/org/apache/ibatis/mapping/ResultMap.java)
+  结果映射集合
+- [ResultMapping](mybatis-3/src/main/java/org/apache/ibatis/mapping/ResultMapping.java)
+  单个映射结果
+- [Discriminator](mybatis-3/src/main/java/org/apache/ibatis/mapping/Discriminator.java)
+  根据条件映射结果集
+
 ###### 输入参数处理
+
+- [ParameterMap](mybatis-3/src/main/java/org/apache/ibatis/mapping/ParameterMap.java)
+- [ParameterMapping](mybatis-3/src/main/java/org/apache/ibatis/mapping/ParameterMapping.java)
+
 ###### 多种数据库种类处理
+
+- [DatabaseIdProvider](mybatis-3/src/main/java/org/apache/ibatis/mapping/DatabaseIdProvider.java)
 
 ##### scripting
 
+解析标签,构建SQL语句
 [scripting代码](mybatis-3/src/main/java/org/apache/ibatis/scripting)
 
-##### datasource
+###### 语言驱动接口
 
+- [LanguageDriver](mybatis-3/src/main/java/org/apache/ibatis/scripting/LanguageDriver.java)
+  创建SQLSource和参数处理器,默认为 [XMLLanguageDriver](mybatis-3/src/main/java/org/apache/ibatis/scripting/xmltags/XMLLanguageDriver.java)
+
+##### 构建SQL节点树
+
+使用 [XMLScriptBuilder](mybatis-3/src/main/java/org/apache/ibatis/scripting/xmltags/XMLScriptBuilder.java)构建
+
+##### 解析SQL节点树
+
+使用 [xmltags](mybatis-3/src/main/java/org/apache/ibatis/scripting/xmltags)  解析
+
+##### 动态节点解析
+
+解析动态标签，拼接成SQL 
+
+##### datasource
+数据库读取，数据连接建立
 [datasource代码](mybatis-3/src/main/java/org/apache/ibatis/datasource)
+##### JDBC操作
+通过 java.sql 和javax.sql 完成JDBC操作
+
+- java.sql
+  - 将SQL语句传递给数据库，从数据库中以表格的形式读写数据
+  - 数据库驱动接口 Driver
+  - 数据操作流程
+    - 建立DriverManager对象
+    - 从DriverManager 对象中获取Connection 对象
+    - 从Connection对象中获取Statement对象
+    - 将SQL语句交给Statement 对象执行，并获得返回结果
+- javax.sql
+  - DataSource 接口
+  - 连接池，语句池，分布式事务
+  - 数据操作流程
+    - 建立DataSource对象
+    - 从DataSource 对象中获取Connection 对象
+    - 从Connection对象中获取Statement对象
+    - 将SQL语句交给Statement 对象执行，并获得返回结果
+    
+- DriverManager
+JDBC驱动管理器，管理一组JDBC驱动器，注册驱动，删除驱动，查找驱动，建立数据库连接
+- DataSource
+数据库源,作为工厂提供数据库连接， 对DriverManager 进行封装
+- Connection
+数据库连接，完成SQL语句得到执行和结果的获取
+- Statement
+执行静态SQL语句并返回结果
 
 #### 核心操作
 
@@ -1452,7 +1524,7 @@ SQL语句
 - [jdbc](mybatis-3/src/main/java/org/apache/ibatis/jdbc)
 - [plugin](mybatis-3/src/main/java/org/apache/ibatis/plugin)
 - [session](mybatis-3/src/main/java/org/apache/ibatis/session)
-- [Transaction](mybatis-3/src/main/java/org/apache/ibatis/Transaction)
+- [Transaction](mybatis*-*3/src/main/java/org/apache/ibatis/Transaction)
 - [util](mybatis-3/src/main/java/org/apache/ibatis/util)
 
 ## 阅读技巧

@@ -24,7 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Caches OGNL parsed expressions.
- *
+ * 缓存已解析的表达式
  * @author Eduardo Macarron
  *
  * @see <a href='https://github.com/mybatis/old-google-code-issues/issues/342'>Issue 342</a>

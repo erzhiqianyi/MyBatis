@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.StringJoiner;
 
 /**
+ * b保存已解析的SQL节点，配置参数环境
  * @author Clinton Begin
  */
 public class DynamicContext {
@@ -37,8 +38,13 @@ public class DynamicContext {
     OgnlRuntime.setPropertyAccessor(ContextMap.class, new ContextAccessor());
   }
 
+  //上下文环境
   private final ContextMap bindings;
+
+  //用于拼装的SQL语句片段,如何保证拼装节点的有序性
   private final StringJoiner sqlBuilder = new StringJoiner(" ");
+
+  //解析序列号
   private int uniqueNumber = 0;
 
   public DynamicContext(Configuration configuration, Object parameterObject) {
