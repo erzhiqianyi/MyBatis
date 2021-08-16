@@ -16,15 +16,16 @@
 package org.apache.ibatis.datasource;
 
 import javax.sql.DataSource;
-import java.sql.DriverManager;
 import java.util.Properties;
 
 /**
+ * 工厂模式，生成DataSource,通过DataSource获取Connection
+ *
  * @author Clinton Begin
  */
 public interface DataSourceFactory {
 
-  void setProperties(Properties props);
+    void setProperties(Properties props);
 
-  DataSource getDataSource();
+    DataSource getDataSource();
 }

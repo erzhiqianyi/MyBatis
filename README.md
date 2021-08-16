@@ -1487,7 +1487,7 @@ public class Reflector {
 ##### datasource
 数据库读取，数据连接建立
 [datasource代码](mybatis-3/src/main/java/org/apache/ibatis/datasource)
-##### JDBC操作
+###### JDBC操作
 通过 java.sql 和javax.sql 完成JDBC操作
 
 - java.sql
@@ -1515,7 +1515,14 @@ JDBC驱动管理器，管理一组JDBC驱动器，注册驱动，删除驱动，
 数据库连接，完成SQL语句得到执行和结果的获取
 - Statement
 执行静态SQL语句并返回结果
-
+######  DataSourceFactory
+生产 DataSource ,通过DataSource获取Connection
+- JndiDataSourceFactory 
+通过命名空间查找已经存在的 DataSource
+- PooledDataSource
+获取池化的 DataSource
+- UnpooledDataSource
+获取非池化的 DataSource
 #### 核心操作
 
 - [cache](mybatis-3/src/main/java/org/apache/ibatis/cache)
