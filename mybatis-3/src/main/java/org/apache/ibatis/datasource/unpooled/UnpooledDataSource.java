@@ -28,6 +28,7 @@ import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
 /**
+ * 非池化数据源
  * @author Clinton Begin
  * @author Eduardo Macarron
  */
@@ -216,6 +217,7 @@ public class UnpooledDataSource implements DataSource {
 
   private Connection doGetConnection(Properties properties) throws SQLException {
     initializeDriver();
+    //通过 DriverManager 获取连接
     Connection connection = DriverManager.getConnection(url, properties);
     configureConnection(connection);
     return connection;

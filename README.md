@@ -92,6 +92,7 @@ Myabits source read note and sample
             - [动态节点解析](#动态节点解析)
         - [datasource](#datasource)
             - [JDBC操作](#JDBC操作)
+            - [DataSourceFactory](#DataSourceFactory)
     - [核心操作](#核心操作)
 - [阅读技巧](#阅读技巧)
 - [设计思想](#设计思想)

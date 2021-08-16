@@ -44,15 +44,27 @@ public class PooledDataSource implements DataSource {
   private final UnpooledDataSource dataSource;
 
   // OPTIONAL CONFIGURATION FIELDS
+
+  //最大活动连接数
   protected int poolMaximumActiveConnections = 10;
+  //最大空闲连接数
   protected int poolMaximumIdleConnections = 5;
+
+  //最大可回收时间,即当达到最大活动连接数时，此时如果有程序获取连接，则检查最先使用的连接，看其是否超出了该时间，如果超出了该时间，则可以回收该连接。
   protected int poolMaximumCheckoutTime = 20000;
+
+  //没有连接时，重尝试获取连接以及打印日志的时间间隔
   protected int poolTimeToWait = 20000;
+
   protected int poolMaximumLocalBadConnectionTolerance = 3;
+
   protected String poolPingQuery = "NO PING QUERY SET";
+
   protected boolean poolPingEnabled;
+
   protected int poolPingConnectionsNotUsedFor;
 
+  //数据源连接类型编码
   private int expectedConnectionTypeCode;
 
   public PooledDataSource() {

@@ -19,26 +19,50 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 数据库连接及状态信息,方便统计连接池数据
+ * 将连接缓存起来，通过两个列表来实现，一个维持活动连接，一个维持空闲连接
+ * 通过同步保证多线程安全
  * @author Clinton Begin
  */
 public class PoolState {
 
+  //池化数据源
   protected PooledDataSource dataSource;
 
+  //空闲连接
   protected final List<PooledConnection> idleConnections = new ArrayList<>();
+
+  //活动连接
   protected final List<PooledConnection> activeConnections = new ArrayList<>();
+
+  //连接被取出的次数
   protected long requestCount = 0;
+
+  //取出请求花费时间的累计值，从准备取出到取出结束的时间
   protected long accumulatedRequestTime = 0;
+
+  //累计被检出的时间
   protected long accumulatedCheckoutTime = 0;
+
+  //声明的过期连接数
   protected long claimedOverdueConnectionCount = 0;
+
+  //过期的连接数的总检出时长
   protected long accumulatedCheckoutTimeOfOverdueConnections = 0;
+
+  //总等待时间
   protected long accumulatedWaitTime = 0;
+
+  //等待的轮次
   protected long hadToWaitCount = 0;
+
+  //坏连接的数目
   protected long badConnectionCount = 0;
 
   public PoolState(PooledDataSource dataSource) {
     this.dataSource = dataSource;
   }
+
 
   public synchronized long getRequestCount() {
     return requestCount;

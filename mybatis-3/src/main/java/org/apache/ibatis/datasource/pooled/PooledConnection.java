@@ -24,6 +24,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
+ * 池化数据库连接
  * @author Clinton Begin
  */
 class PooledConnection implements InvocationHandler {
@@ -32,12 +33,21 @@ class PooledConnection implements InvocationHandler {
   private static final Class<?>[] IFACES = new Class<?>[] { Connection.class };
 
   private final int hashCode;
+  //池化数据源
   private final PooledDataSource dataSource;
+
+  //真实的Connection
   private final Connection realConnection;
+
+  //代理Connection
   private final Connection proxyConnection;
+
   private long checkoutTimestamp;
+
   private long createdTimestamp;
+
   private long lastUsedTimestamp;
+
   private int connectionTypeCode;
   private boolean valid;
 
