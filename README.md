@@ -94,6 +94,8 @@ Myabits source read note and sample
             - [JDBC操作](#JDBC操作)
             - [DataSourceFactory](#DataSourceFactory)
     - [核心操作](#核心操作)
+        - [jdbc](#jdbc)
+    
 - [阅读技巧](#阅读技巧)
 - [设计思想](#设计思想)
     - [包划分](#包划分)
@@ -1529,7 +1531,9 @@ JDBC驱动管理器，管理一组JDBC驱动器，注册驱动，删除驱动，
 - [cache](mybatis-3/src/main/java/org/apache/ibatis/cache)
 - [cursor](mybatis-3/src/main/java/org/apache/ibatis/cursor)
 - [executor](mybatis-3/src/main/java/org/apache/ibatis/executor)
-- [jdbc](mybatis-3/src/main/java/org/apache/ibatis/jdbc)
+##### jdbc
+[jdbc代码](mybatis-3/src/main/java/org/apache/ibatis/jdbc)
+执行数据库操作语句和运行脚本，方便独立使用
 - [plugin](mybatis-3/src/main/java/org/apache/ibatis/plugin)
 - [session](mybatis-3/src/main/java/org/apache/ibatis/session)
 - [Transaction](mybatis*-*3/src/main/java/org/apache/ibatis/Transaction)

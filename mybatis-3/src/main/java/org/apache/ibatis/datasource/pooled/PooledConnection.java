@@ -24,7 +24,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
- * 池化数据库连接
+ * 池化数据库连接,代理connection ,改变connection  的关闭连接行为
  * @author Clinton Begin
  */
 class PooledConnection implements InvocationHandler {

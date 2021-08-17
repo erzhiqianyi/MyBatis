@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * 实现SQL语句拼接
  * @author Clinton Begin
  * @author Jeff Butler
  * @author Adam Gent

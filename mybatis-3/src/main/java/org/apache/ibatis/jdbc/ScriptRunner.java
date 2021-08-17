@@ -23,6 +23,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * 运行SQL脚本
  * This is an internal testing utility.<br>
  * You are welcome to use this class for your own purposes,<br>
  * but if there is some feature/enhancement you need for your own usage,<br>

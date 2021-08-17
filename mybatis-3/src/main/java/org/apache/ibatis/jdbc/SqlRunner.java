@@ -23,6 +23,7 @@ import java.sql.*;
 import java.util.*;
 
 /**
+ * 运行sql语句
  * @author Clinton Begin
  */
 public class SqlRunner {
