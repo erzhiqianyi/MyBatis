@@ -94,8 +94,11 @@ Myabits source read note and sample
             - [JDBC操作](#JDBC操作)
             - [DataSourceFactory](#DataSourceFactory)
     - [核心操作](#核心操作)
+        - [cache](#cache)
+            - [引用类型](#引用类型)
+            - [缓存实现](#缓存实现)
         - [jdbc](#jdbc)
-    
+
 - [阅读技巧](#阅读技巧)
 - [设计思想](#设计思想)
     - [包划分](#包划分)
@@ -1485,55 +1488,105 @@ public class Reflector {
 
 ##### 动态节点解析
 
-解析动态标签，拼接成SQL 
+解析动态标签，拼接成SQL
 
 ##### datasource
+
 数据库读取，数据连接建立
 [datasource代码](mybatis-3/src/main/java/org/apache/ibatis/datasource)
+
 ###### JDBC操作
+
 通过 java.sql 和javax.sql 完成JDBC操作
 
 - java.sql
-  - 将SQL语句传递给数据库，从数据库中以表格的形式读写数据
-  - 数据库驱动接口 Driver
-  - 数据操作流程
-    - 建立DriverManager对象
-    - 从DriverManager 对象中获取Connection 对象
-    - 从Connection对象中获取Statement对象
-    - 将SQL语句交给Statement 对象执行，并获得返回结果
+    - 将SQL语句传递给数据库，从数据库中以表格的形式读写数据
+    - 数据库驱动接口 Driver
+    - 数据操作流程
+        - 建立DriverManager对象
+        - 从DriverManager 对象中获取Connection 对象
+        - 从Connection对象中获取Statement对象
+        - 将SQL语句交给Statement 对象执行，并获得返回结果
 - javax.sql
-  - DataSource 接口
-  - 连接池，语句池，分布式事务
-  - 数据操作流程
-    - 建立DataSource对象
-    - 从DataSource 对象中获取Connection 对象
-    - 从Connection对象中获取Statement对象
-    - 将SQL语句交给Statement 对象执行，并获得返回结果
-    
-- DriverManager
-JDBC驱动管理器，管理一组JDBC驱动器，注册驱动，删除驱动，查找驱动，建立数据库连接
-- DataSource
-数据库源,作为工厂提供数据库连接， 对DriverManager 进行封装
-- Connection
-数据库连接，完成SQL语句得到执行和结果的获取
-- Statement
-执行静态SQL语句并返回结果
-######  DataSourceFactory
+    - DataSource 接口
+    - 连接池，语句池，分布式事务
+    - 数据操作流程
+        - 建立DataSource对象
+        - 从DataSource 对象中获取Connection 对象
+        - 从Connection对象中获取Statement对象
+        - 将SQL语句交给Statement 对象执行，并获得返回结果
+
+- DriverManager JDBC驱动管理器，管理一组JDBC驱动器，注册驱动，删除驱动，查找驱动，建立数据库连接
+- DataSource 数据库源,作为工厂提供数据库连接， 对DriverManager 进行封装
+- Connection 数据库连接，完成SQL语句得到执行和结果的获取
+- Statement 执行静态SQL语句并返回结果
+
+###### DataSourceFactory
+
 生产 DataSource ,通过DataSource获取Connection
-- JndiDataSourceFactory 
-通过命名空间查找已经存在的 DataSource
-- PooledDataSource
-获取池化的 DataSource
-- UnpooledDataSource
-获取非池化的 DataSource
+
+- JndiDataSourceFactory 通过命名空间查找已经存在的 DataSource
+- PooledDataSource 获取池化的 DataSource
+- UnpooledDataSource 获取非池化的 DataSource
+
 #### 核心操作
 
-- [cache](mybatis-3/src/main/java/org/apache/ibatis/cache)
+##### cache
+
+提供缓存能力
+[cache代码](mybatis-3/src/main/java/org/apache/ibatis/cache)
+
+##### 引用类型
+
+- 强引用 通过new 出来的对象
+-
+- 软引用(SoftReference)
+  被GC Root 软引用到,则说明是非必需的，内存空间不足时，JVM 会回收对待
+-
+- 弱引用(WeekReference)
+  被GC Root 弱引用到，则说明是多余的。JVM发现后就会回收
+
+- 虚引用(PhantomReference)
+  被GC Root 虚引用到，用来跟踪对象被垃圾回收器回收的活动
+
+##### 缓存实现
+
+- 缓存键机制要掐
+    - 无碰撞
+    - 高效比较
+    - 高效生成
+- 缓存键
+  [CacheKey](mybatis-3/src/main/java/org/apache/ibatis/cache/CacheKey.java)
+- 缓存键生成 用所有的查询信息生成缓存键
+- 缓存实现类
+  [PerpetualCache](mybatis-3/src/main/java/org/apache/ibatis/cache/PerpetualCache.java) 使用 Hashmap 实现
+- 缓存装饰器
+    - 同步装饰器
+    - 日志装饰器
+    - 清理装饰器
+    - 阻塞装饰器
+    - 定时清理装饰器
+    - 事务装饰器
+- 缓存组建 使用 [CacheBuilder](mybatis-3/src/main/java/org/apache/ibatis/mapping/CacheBuilder.java) 构建缓存
 - [cursor](mybatis-3/src/main/java/org/apache/ibatis/cursor)
 - [executor](mybatis-3/src/main/java/org/apache/ibatis/executor)
+
+##### 缓存机制
+先查二级缓存再查一级缓存
+- 一级缓存 在BaseExecutor中实现
+    - 在setting 中配置，可配置范围为 session 或 statement
+    - 在数据库操作节点中配置 flushCache属性
+
+- 二级缓存 作用范围为命名空间,在CachingExecutor中实现
+    - 在setting 中配置 ,默认开启
+    - 在映射文件中
+    - 在数据库操作节点配置是否使用缓存(useCache) ，Select 默认为true
+    - 在书库操作节点配置 flushCache属性，执行该语句前清除一二级缓存
 ##### jdbc
+
 [jdbc代码](mybatis-3/src/main/java/org/apache/ibatis/jdbc)
 执行数据库操作语句和运行脚本，方便独立使用
+
 - [plugin](mybatis-3/src/main/java/org/apache/ibatis/plugin)
 - [session](mybatis-3/src/main/java/org/apache/ibatis/session)
 - [Transaction](mybatis*-*3/src/main/java/org/apache/ibatis/Transaction)

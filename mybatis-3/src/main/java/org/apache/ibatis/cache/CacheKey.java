@@ -109,6 +109,7 @@ public class CacheKey implements Cloneable, Serializable {
     }
 
     for (int i = 0; i < updateList.size(); i++) {
+      //对比更新历史，保证不会碰撞
       Object thisObject = updateList.get(i);
       Object thatObject = cacheKey.updateList.get(i);
       if (!ArrayUtil.equals(thisObject, thatObject)) {
